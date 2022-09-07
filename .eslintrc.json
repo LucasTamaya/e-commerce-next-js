@@ -1,0 +1,9 @@
+{
+  "extends": ["next", "prettier"],
+  "rules": {
+    "eqeqeq": "error",
+    "semi": "warn",
+    "quotes": "warn",
+    "no-unused-vars": "warn"
+  }
+}
