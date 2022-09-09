@@ -1,23 +1,26 @@
 import { rest } from "msw";
+
 import { server } from "tests/config/server";
-import ProductList from "../../../src/components/Product/ProductList";
-import { renderWithClient } from "../../config/utils";
+import ProductList from "@/components/Product/ProductList";
+import { renderWithClient } from "@/config/utils";
 
 describe("ProductList Component", () => {
   it("should renders the component", () => {
-    const { getByRole } = renderWithClient(
-      <ProductList category="men's clothing" />
+    const { getByText } = renderWithClient(
+      <ProductList category="men's clothing" title="Men's Products" />
     );
 
-    expect(getByRole("heading")).toBeInTheDocument();
+    expect(getByText(/Men's Products/i)).toBeInTheDocument();
   });
 
   it("should renders some ProductCards when the fetch request is done", async () => {
-    const { findAllByRole } = renderWithClient(
-      <ProductList category="men's clothing" />
+    const { findAllByText, findAllByRole } = renderWithClient(
+      <ProductList category="men's clothing" title="Men's Products" />
     );
 
-    expect(await findAllByRole("listitem")).toHaveLength(4);
+    expect(await findAllByText("Product")).toHaveLength(4);
+    expect(await findAllByText("$10")).toHaveLength(4);
+    expect(await findAllByRole("img")).toHaveLength(4);
   });
 
   it("should renders an error message if the fetch request fails", async () => {
@@ -28,7 +31,7 @@ describe("ProductList Component", () => {
     );
 
     const { findByText } = renderWithClient(
-      <ProductList category="men's clothing" />
+      <ProductList category="men's clothing" title="Men's Products" />
     );
 
     expect(

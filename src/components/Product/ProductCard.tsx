@@ -1,23 +1,25 @@
 import type { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
-import { IProduct } from "../../interfaces/product";
+import { IProductCard } from "../../interfaces/productCard";
 
-const ProductCard: NextPage<IProduct> = ({
-  id,
-  title,
-  image,
-  price,
-  rating,
-  category,
-  description,
-}) => {
+const ProductCard: NextPage<IProductCard> = ({ id, title, image, price }) => {
   return (
-    <div key={id}>
-      <p>{title}</p>
-      <p>${price}</p>
-      <Image src={image} width={150} height={150} alt="product image" />
-      <p>{rating.rate}</p>
+    <div className="relative">
+      <p className="absolute top-5 left-5 font-bold">${price}</p>
+      <div className="flex justify-center items-center">
+        <Image src={image} width={220} height={250} alt="product image" />
+      </div>
+      <p className="text-left text-sm my-5 text-ellipsis overflow-hidden whitespace-nowrap">
+        {title}
+      </p>
+
+      <Link href={`/product/${id}`} role={"link"}>
+        <a className="w-full block text-center text-black border-2 border-black uppercase font-bold py-2 transition duration-200 mb-3 hover:text-white hover:bg-black ">
+          See more
+        </a>
+      </Link>
     </div>
   );
 };

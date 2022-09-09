@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import ProductList from "src/components/Product/ProductList";
+import ProductList from "@/components/Product/ProductList";
 
 interface Props {}
 
 const Women: NextPage<Props> = ({}) => {
-  return <ProductList category="women's clothing" />;
+  return <ProductList category="women's clothing" title="Women's Products" />;
 };
 
 export default Women;

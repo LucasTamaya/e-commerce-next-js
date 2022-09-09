@@ -7,13 +7,13 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  testPathIgnorePatterns: ["<rootDir>/.next", "<rootDir>/node_modules"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  // moduleNameMapper: {
-  //   // Handle module aliases (this will be automatically configured for you soon)
-  //   "^@/components/(.*)$": "<rootDir>/components/$1",
-
-  //   "^@/pages/(.*)$": "<rootDir>/pages/$1",
-  // },
+  moduleNameMapper: {
+    "^@/components/(.*)$": "<rootDir>/src/components/$1",
+    "^@/pages/(.*)$": "<rootDir>/pages/$1",
+    "^@/config/(.*)$": "<rootDir>/tests/config/$1",
+  },
   testEnvironment: "jest-environment-jsdom",
   modulePaths: ["<rootDir>"],
 };

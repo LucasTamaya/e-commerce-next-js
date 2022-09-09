@@ -6,11 +6,11 @@ interface Props {}
 const Navbar: NextPage<Props> = ({}) => {
   return (
     <nav>
-      <ul className="flex flex-row justify-evenly items-center py-10">
-        <li>
+      <ul className="flex flex-row items-center gap-x-5">
+        <li className="text-white transition duration-150 hover:text-gray-500">
           <Link href="/products/men">Men</Link>
         </li>
-        <li>
+        <li className="text-white transition duration-150 hover:text-gray-500">
           <Link href="/products/women">Women</Link>
         </li>
       </ul>
