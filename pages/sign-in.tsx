@@ -14,7 +14,7 @@ import {
 import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
 
-const Login: NextPage = () => {
+const SignIn: NextPage = () => {
   // tous les outils nécessaires afin de gérer mon formulaire
   const { control, handleSubmit } = useForm<ILoginFormValues>({
     resolver: yupResolver(loginValidationSchema),
@@ -121,4 +121,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default SignIn;

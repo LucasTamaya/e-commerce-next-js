@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import Login from "@/pages/login";
+import SignIn from "@/pages/sign-in";
 import * as FirebaseConfig from "../../firebase-config";
 import { act } from "react-dom/test-utils";
 
@@ -10,9 +10,9 @@ jest.mock("../../firebase-config.ts", () => {
   });
 });
 
-describe("Login Page", () => {
+describe("SignIn Page", () => {
   it("should renders the page", () => {
-    render(<Login />);
+    render(<SignIn />);
 
     expect(screen.getByPlaceholderText("Email")).toBeTruthy();
     expect(screen.getByPlaceholderText("Password")).toBeTruthy();
@@ -20,7 +20,7 @@ describe("Login Page", () => {
   });
 
   it("should shows error messages if input fields are incorrect", async () => {
-    render(<Login />);
+    render(<SignIn />);
 
     const emailInput = screen.getByPlaceholderText("Email");
     const passwordInput = screen.getByPlaceholderText("Password");
@@ -39,7 +39,7 @@ describe("Login Page", () => {
   });
 
   it("should shows error messages if we submit the form with empty fields", async () => {
-    render(<Login />);
+    render(<SignIn />);
 
     const submitBtn = screen.getByText("Sign-In");
 

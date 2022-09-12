@@ -3,9 +3,11 @@ import type { NextPage, NextPageContext } from "next";
 import Image from "next/image";
 
 import { IProduct } from "@/interfaces/index";
-import Button from "@/components/Button";
-import Header from "@/components/Header";
-import { BASE_URL } from "src/utils/baseUrl";
+import Button from "@/components/Common/Button";
+import Header from "@/components/Common/Header";
+import { useAddProductToCart } from "src/hooks/useAddProductToCart";
+import { useEffect, useState } from "react";
+import { SnackBar } from "@/components/Common/Snackbar";
 
 const Product: NextPage<IProduct> = ({
   id,
@@ -15,18 +17,21 @@ const Product: NextPage<IProduct> = ({
   image,
   rating,
 }) => {
-  const handleAddToCart = async (): Promise<any> => {
-    const res = await axios.post(`${BASE_URL}/api/add-to-cart`, {
-      id,
-    });
+  const { mutate, isLoading, isError, isSuccess, data } =
+    useAddProductToCart(id);
 
-    console.log(res);
-  };
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setOpen(true);
+    }
+  }, [isSuccess, isError]);
 
   return (
     <>
       <Header />
-      <div className="w-full h-[80vh] flex flex-row justify-center items-center">
+      <div className="relative w-full h-[80vh] flex flex-row justify-center items-center">
         <div className="max-w-[1000px] flex items-center gap-x-10 mx-auto">
           <Image src={image} alt="product image" width={250} height={250} />
           <div className="flex-auto flex flex-col max-w-[700px] gap-y-3">
@@ -35,11 +40,20 @@ const Product: NextPage<IProduct> = ({
             <p>{description}</p>
             <p className="font-bold">Rating: {rating.rate}/10</p>
             <Button filled={true}>Buy now</Button>
-            <Button filled={false} onClick={handleAddToCart}>
+            <Button filled={false} onClick={() => mutate()}>
               Add to cart
             </Button>
           </div>
         </div>
+        {isError && <>Something went wrong</>}
+        {isSuccess && (
+          <SnackBar
+            open={open}
+            setOpen={setOpen}
+            error={data.error}
+            message={data.message}
+          />
+        )}
       </div>
     </>
   );

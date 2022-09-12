@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 interface Props {
   children: string;
   filled: boolean;
-  onClick?: () => Promise<any>;
+  onClick?: () => any;
 }
 
 const Button: NextPage<Props> = ({ children, filled, onClick }) => {

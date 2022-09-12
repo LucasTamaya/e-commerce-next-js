@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-import { IProduct } from "../interfaces/product";
+import { IProduct } from "../interfaces";
 
 const fetchProductsByCategory = async (
   category: string

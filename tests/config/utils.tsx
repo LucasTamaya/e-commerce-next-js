@@ -9,6 +9,18 @@ export const handlers = [
   rest.get("*/category/men*", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(menProducts));
   }),
+  rest.post("*/add-to-cart", (req, res, ctx) => {
+    console.log(req);
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        error: false,
+        message: "Product correctly added to cart",
+        userId: "gae54tyje3748vidj",
+      })
+    );
+  }),
 ];
 
 const createTestQueryClient = () =>

@@ -14,7 +14,7 @@ const Navbar: NextPage<Props> = ({}) => {
           <Link href="/products/women">Women</Link>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/login">Login</Link>
+          <Link href="/sign-in">Sign-in</Link>
         </li>
       </ul>
     </nav>

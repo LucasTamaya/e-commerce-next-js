@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { IProductCard } from "../../interfaces/productCard";
+import { IProductCard } from "../../interfaces";
 
 const ProductCard: NextPage<IProductCard> = ({ id, title, image, price }) => {
   return (

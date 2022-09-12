@@ -2,21 +2,28 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 interface IData {
   error: boolean;
-  details: string;
+  message: string;
+  userId?: string;
 }
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<IData>
 ) {
-  const { cookies } = req;
+  const { body, cookies } = req;
+
+  console.log(body);
+  console.log(cookies);
 
   if (!cookies.userId) {
-    console.log("No cookies");
     return res
       .status(200)
-      .json({ error: true, details: "No cookies available" });
+      .json({ error: true, message: "Please sign-in first" });
   }
 
-  return res.status(200).json({ error: false, details: "Got some cookies !" });
+  return res.status(200).json({
+    error: false,
+    message: "Product correctly added to cart",
+    userId: cookies.userId,
+  });
 }

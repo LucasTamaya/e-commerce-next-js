@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 
 import { useProductsByCategory } from "src/hooks/useProductsByCategory";
-import Header from "../Header";
+import Header from "../Common/Header";
 import ProductCard from "./ProductCard";
 
 interface Props {
