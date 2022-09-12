@@ -19,7 +19,7 @@
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["pages/*"],
       "@/config/*": ["tests/config/*"],
-      "@/interfaces/*": ["src/interfaces/*"]
+      "@/interfaces/*": ["src/interfaces"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

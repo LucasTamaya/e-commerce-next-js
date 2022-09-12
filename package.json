@@ -8,18 +8,26 @@
     "start": "next start",
     "lint": "next lint",
     "fix": "eslint . --fix",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@hookform/resolvers": "^2.9.7",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.4",
     "@tanstack/react-query": "^4.2.3",
     "axios": "^0.27.2",
+    "cookie": "^0.5.0",
+    "dotenv": "^16.0.2",
+    "firebase": "^9.9.4",
     "next": "12.2.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-cookie": "^4.1.1",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.35.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
