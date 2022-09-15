@@ -8,6 +8,6 @@ describe("Navbar Component", () => {
     render(<Navbar />);
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(3);
+    expect(screen.getAllByRole("listitem")).toHaveLength(4);
   });
 });

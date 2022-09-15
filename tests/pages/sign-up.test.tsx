@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 
-import SignIn from "@/pages/sign-in";
+import SignUp from "@/pages/sign-up";
 // import * as FirebaseConfig from "../../src/firebase/firebase-config";
 // import { act } from "react-dom/test-utils";
 
@@ -12,7 +12,7 @@ jest.mock("../../src/firebase/firebase-config.ts", () => {
 
 describe("SignIn Page", () => {
   it("should renders the page", () => {
-    render(<SignIn />);
+    render(<SignUp />);
 
     expect(screen.getByPlaceholderText("Email")).toBeTruthy();
     expect(screen.getByPlaceholderText("Password")).toBeTruthy();
@@ -20,11 +20,11 @@ describe("SignIn Page", () => {
   });
 
   it("should shows error messages if input fields are incorrect", async () => {
-    render(<SignIn />);
+    render(<SignUp />);
 
     const emailInput = screen.getByPlaceholderText("Email");
     const passwordInput = screen.getByPlaceholderText("Password");
-    const submitBtn = screen.getByText("Sign-In");
+    const submitBtn = screen.getByText("Sign-Up");
 
     fireEvent.change(emailInput, {
       target: { value: "N0t_aCorrect@email.45" },
@@ -39,9 +39,9 @@ describe("SignIn Page", () => {
   });
 
   it("should shows error messages if we submit the form with empty fields", async () => {
-    render(<SignIn />);
+    render(<SignUp />);
 
-    const submitBtn = screen.getByText("Sign-In");
+    const submitBtn = screen.getByText("Sign-Up");
 
     fireEvent.click(submitBtn);
 
@@ -50,24 +50,3 @@ describe("SignIn Page", () => {
     );
   });
 });
-
-// it("should push the user to the index page if the authentification is successfull", async () => {
-//   render(<Login />);
-
-//   const emailInput = screen.getByPlaceholderText("Email");
-//   const passwordInput = screen.getByPlaceholderText("Password");
-//   const submitBtn = screen.getByText("Sign-In");
-//   act(() => {
-//     fireEvent.change(emailInput, {
-//       target: { value: "toto@orange.fr" },
-//     });
-//     fireEvent.change(passwordInput, { target: { value: "123456" } });
-//     fireEvent.click(submitBtn);
-//   });
-
-//   expect(await screen.findByText("CONNECTED"));
-// });
-
-//   it("should renders an error message if the authentification fails", () => {});
-
-//   it("should renders an error message if there is an error during the fetch request", () => {});

@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
+  createUserWithEmailAndPassword,
   FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
@@ -7,8 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { MouseEvent } from "react";
-import { string } from "yup";
+import { createUserCart } from "./utils";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -46,6 +46,26 @@ export const signInWithEmailAndPasswordForm = async (
 ) => {
   try {
     const credentials = await signInWithEmailAndPassword(auth, email, password);
+
+    return credentials.user.uid;
+  } catch (err: any) {
+    console.log(err.message);
+    throw Error(err.message);
+  }
+};
+
+export const createUserWithEmailAndPasswordForm = async (
+  email: string,
+  password: string
+) => {
+  try {
+    const credentials = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    await createUserCart(credentials.user.uid);
 
     return credentials.user.uid;
   } catch (err: any) {

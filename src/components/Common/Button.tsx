@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
+import { ReactNode } from "react";
 
 interface Props {
-  children: string;
+  children: ReactNode;
   filled: boolean;
   onClick?: () => any;
 }

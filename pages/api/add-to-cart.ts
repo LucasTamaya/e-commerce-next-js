@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { db } from "src/firebase/firebase-config";
 
 interface IData {
   error: boolean;
@@ -6,7 +8,7 @@ interface IData {
   userId?: string;
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IData>
 ) {
@@ -21,9 +23,21 @@ export default function handler(
       .json({ error: true, message: "Please sign-in first" });
   }
 
-  return res.status(200).json({
-    error: false,
-    message: "Product correctly added to cart",
-    userId: cookies.userId,
-  });
+  // if cookie available, add product in firebase
+  const docRef = doc(db, "users", cookies.userId);
+
+  try {
+    await updateDoc(docRef, { cart: arrayUnion(body.productId) });
+    return res.status(200).json({
+      error: false,
+      message: "Product correctly added to cart",
+      userId: cookies.userId,
+    });
+  } catch (err: any) {
+    console.log(err.message);
+    return res.status(400).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
 }

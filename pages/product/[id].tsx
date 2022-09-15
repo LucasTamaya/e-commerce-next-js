@@ -7,7 +7,7 @@ import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { useAddProductToCart } from "src/hooks/useAddProductToCart";
 import { useEffect, useState } from "react";
-import { SnackBar } from "@/components/Common/Snackbar";
+import { SnackBar } from "@/components/Common/SnackBar";
 
 const Product: NextPage<IProduct> = ({
   id,
@@ -41,7 +41,7 @@ const Product: NextPage<IProduct> = ({
             <p className="font-bold">Rating: {rating.rate}/10</p>
             <Button filled={true}>Buy now</Button>
             <Button filled={false} onClick={() => mutate()}>
-              Add to cart
+              {!isLoading ? <>Add to cart</> : <>Loading...</>}
             </Button>
           </div>
         </div>

@@ -5,18 +5,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
-import { BeatLoader } from "react-spinners";
 
 import {
   googleProvider,
   signInWithProvider,
-  signInWithEmailAndPasswordForm,
-} from "../src/firebase/firebase-config";
+  createUserWithEmailAndPasswordForm,
+} from "src/firebase/firebase-config";
 import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
 import Link from "next/link";
 
-const SignIn: NextPage = () => {
+const SignUp: NextPage = () => {
   // tous les outils nécessaires afin de gérer mon formulaire
   const { control, handleSubmit } = useForm<ILoginFormValues>({
     resolver: yupResolver(loginValidationSchema),
@@ -26,11 +25,13 @@ const SignIn: NextPage = () => {
 
   const router = useRouter();
 
-  const handleSignInWithEmailAndPassword = async (input: ILoginFormValues) => {
+  const handleSignUpWithEmailAndPassword = async (input: ILoginFormValues) => {
     try {
       const { email, password } = input;
 
-      const userId = await signInWithEmailAndPasswordForm(email, password);
+      const userId = await createUserWithEmailAndPasswordForm(email, password);
+
+      localStorage.setItem("userId", userId);
 
       setCookie("userId", userId, {
         path: "/",
@@ -64,7 +65,7 @@ const SignIn: NextPage = () => {
     <div className="w-full h-screen flex flex-row justify-center items-center">
       <form
         className="border-2 border-black flex flex-col gap-y-2 p-5"
-        onSubmit={handleSubmit(handleSignInWithEmailAndPassword)}
+        onSubmit={handleSubmit(handleSignUpWithEmailAndPassword)}
       >
         <Controller
           control={control}
@@ -105,7 +106,7 @@ const SignIn: NextPage = () => {
         />
 
         <button className="bg-black w-full text-white text-center p-3 rounded-lg">
-          Sign-In
+          Sign-Up
         </button>
 
         <button
@@ -116,9 +117,9 @@ const SignIn: NextPage = () => {
           Continue with Google
         </button>
         <p className="text-xs">
-          Don&apos;t have an account ?{" "}
+          Already have an account ?{" "}
           <span className="text-blue-500">
-            <Link href="/sign-up">Sign-Up</Link>
+            <Link href="/sign-in">Sign-In</Link>
           </span>
         </p>
       </form>
@@ -126,4 +127,4 @@ const SignIn: NextPage = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
