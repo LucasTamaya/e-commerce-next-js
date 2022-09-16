@@ -12,7 +12,7 @@ const Button: NextPage<Props> = ({ children, filled, onClick }) => {
     <button
       className={`${
         filled ? "bg-black text-white" : "text-black border-2 border-black"
-      } text-center uppercase py-2`}
+      } text-center uppercase py-2 w-full`}
       onClick={onClick}
     >
       {children}

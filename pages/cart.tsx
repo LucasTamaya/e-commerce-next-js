@@ -1,10 +1,9 @@
+import Button from "@/components/Common/Button";
+import Header from "@/components/Common/Header";
 import ProductCard from "@/components/Product/ProductCard";
 import { IProduct } from "@/interfaces/*";
-import axios from "axios";
-import { doc, getDoc } from "firebase/firestore";
 import type { NextPage, NextPageContext } from "next";
 import Link from "next/link";
-import { db } from "src/firebase/firebase-config";
 import { getUserCartProductIds, getUserCartProducts } from "src/firebase/utils";
 
 interface Props {
@@ -26,14 +25,34 @@ const Cart: NextPage<Props> = ({ cookie, products }) => {
   }
 
   return (
-    <div>
-      <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
-      {products.map(({ id, title, image, price }) => (
-        <li key={id}>
-          <ProductCard id={id} title={title} image={image} price={price} />
-        </li>
-      ))}
-    </div>
+    <>
+      <Header />
+      <div className="max-w-[1200px] mx-auto">
+        <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
+
+        {products.length === 0 && (
+          <p className="text-center text-lg">Your cart is empty :(</p>
+        )}
+
+        {products.length > 0 && (
+          <>
+            <ul className="max-w-[1300px] grid grid-cols-3 gap-7 mx-auto">
+              {products.map(({ id, title, image, price }) => (
+                <li key={id}>
+                  <ProductCard
+                    id={id}
+                    title={title}
+                    image={image}
+                    price={price}
+                  />
+                </li>
+              ))}
+            </ul>
+            <Button filled={true}>Proceed to checkout</Button>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
@@ -41,12 +60,6 @@ export default Cart;
 
 export const getServerSideProps = async (context: NextPageContext) => {
   const { req } = context;
-
-  // FUTUR COMMIT POUR LA FONCTION DAJOUT AU PANIER
-
-  // Ici, on va tester aussi si on a des cookies
-  // si non on invite l'utilisateur a se connecter
-  // si oui récupère tous les ids des produits dans firebase pour ensuite faire des appels apis pour récupérer les produits*
 
   if (!req?.headers.cookie) {
     return {
