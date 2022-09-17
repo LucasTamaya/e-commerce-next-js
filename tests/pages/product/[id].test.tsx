@@ -1,4 +1,4 @@
-import { findByText, fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import Product from "@/pages/product/[id]";
 import { renderWithClient } from "@/config/utils";
 import { act } from "react-dom/test-utils";

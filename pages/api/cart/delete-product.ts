@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { db } from "src/firebase/firebase-config";
 
 interface IData {
@@ -14,23 +14,20 @@ export default async function handler(
 ) {
   const { body, cookies } = req;
 
-  console.log(body);
   console.log(cookies);
 
   if (!cookies.userId) {
-    return res
-      .status(200)
-      .json({ error: true, message: "Please sign-in first" });
+    return res.json({ error: true, message: "Please sign-in first" });
   }
 
-  // if cookie available, add product in firebase
+  // if cookie available, delete product from firebase
   const docRef = doc(db, "users", cookies.userId);
 
   try {
-    await updateDoc(docRef, { cart: arrayUnion(body.productId) });
-    return res.status(200).json({
+    await updateDoc(docRef, { cart: arrayRemove(body.productId) });
+    return res.json({
       error: false,
-      message: "Product correctly added to cart",
+      message: "Product correctly deleted",
       userId: cookies.userId,
     });
   } catch (err: any) {

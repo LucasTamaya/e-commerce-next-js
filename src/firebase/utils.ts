@@ -28,7 +28,6 @@ export const getUserCartProducts = async (productIds: number[]) => {
       const { data } = await axios.get(
         `https://fakestoreapi.com/products/${id}`
       );
-      console.log(data);
       return data;
     })
   );

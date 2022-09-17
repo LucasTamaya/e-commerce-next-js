@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "src/utils/baseUrl";
 
 const fetchAddProductToCart = async (productId: number): Promise<any> => {
-  const { data } = await axios.post(`${BASE_URL}/api/add-to-cart`, {
+  const { data } = await axios.post(`${BASE_URL}/api/cart/add-product`, {
     productId,
   });
 
