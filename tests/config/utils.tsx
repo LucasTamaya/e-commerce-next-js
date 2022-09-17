@@ -9,7 +9,7 @@ export const handlers = [
   rest.get("*/category/men*", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(menProducts));
   }),
-  rest.post("*/add-to-cart", (req, res, ctx) => {
+  rest.post("*/cart/add*", (req, res, ctx) => {
     console.log(req);
 
     return res(

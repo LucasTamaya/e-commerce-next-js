@@ -61,6 +61,8 @@ describe("Product Page", () => {
       fireEvent.click(addToCartBtn);
     });
 
+    screen.debug();
+
     expect(
       await screen.findByText("Product correctly added to cart")
     ).toBeInTheDocument();
@@ -69,7 +71,7 @@ describe("Product Page", () => {
   it("should renders a warning message if we are not authenticated and we add a product to cart", async () => {
     // simulates that we don't have cookies on that request
     server.use(
-      rest.post("*/add-to-cart", (req, res, ctx) => {
+      rest.post("*/cart/add*", (req, res, ctx) => {
         console.log(req);
 
         return res(
@@ -99,6 +101,8 @@ describe("Product Page", () => {
     act(() => {
       fireEvent.click(addToCartBtn);
     });
+
+    screen.debug();
 
     expect(await screen.findByText("Please sign-in first")).toBeInTheDocument();
   });
