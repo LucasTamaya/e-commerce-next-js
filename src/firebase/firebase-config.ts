@@ -33,6 +33,8 @@ export const signInWithProvider = async (
   try {
     const credentials = await signInWithPopup(auth, provider);
 
+    await createUserCart(credentials.user.uid);
+
     return credentials.user.uid;
   } catch (err: any) {
     console.log(err.message);

@@ -1,12 +1,12 @@
 import axios from "axios";
 import type { NextPage, NextPageContext } from "next";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import { IProduct } from "@/interfaces/index";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { useAddProductToCart } from "src/hooks/useAddProductToCart";
-import { useEffect, useState } from "react";
 import { SnackBar } from "@/components/Common/SnackBar";
 
 const Product: NextPage<IProduct> = ({
@@ -20,11 +20,11 @@ const Product: NextPage<IProduct> = ({
   const { mutate, isLoading, isError, isSuccess, data } =
     useAddProductToCart(id);
 
-  const [open, setOpen] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
   useEffect(() => {
     if (isSuccess || isError) {
-      setOpen(true);
+      setOpenSnackBar(true);
     }
   }, [isSuccess, isError]);
 
@@ -45,12 +45,21 @@ const Product: NextPage<IProduct> = ({
             </Button>
           </div>
         </div>
-        {isError && <>Something went wrong</>}
+
+        {isError && (
+          <SnackBar
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity="error"
+            message="Something went wrong"
+          />
+        )}
+
         {isSuccess && (
           <SnackBar
-            open={open}
-            setOpen={setOpen}
-            error={data.error}
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity={data.error ? "warning" : "success"}
             message={data.message}
           />
         )}

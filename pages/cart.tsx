@@ -9,6 +9,7 @@ import Header from "@/components/Common/Header";
 import { getUserCartProductIds, getUserCartProducts } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
+import { SnackBar } from "@/components/Common/SnackBar";
 
 interface Props {
   cookie: boolean;
@@ -20,8 +21,9 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
   const [cartProducts, setCartProducts] = useState(products);
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
   const [deleteProductId, setDeleteProductId] = useState<number>();
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  const { mutate, isLoading, isError, isSuccess, data } =
+  const { mutate, isLoading, isError, isSuccess } =
     useDeleteProductFromCart(deleteProductId);
 
   useEffect(() => {
@@ -31,6 +33,12 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteProductId]);
+
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setOpenSnackBar(true);
+    }
+  }, [isSuccess, isError]);
 
   const handleDelete = async (idx: number) => {
     // filter the array with the index of the deleted product
@@ -79,13 +87,22 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
                     price={price}
                   />
                   <Button filled={true} onClick={() => handleDelete(idx)}>
-                    Delete from cart
+                    {!isLoading ? <>Delete from cart</> : <>Loading...</>}
                   </Button>
                 </li>
               ))}
             </ul>
             <Button filled={true}>Proceed to checkout</Button>
           </>
+        )}
+
+        {isError && (
+          <SnackBar
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity="error"
+            message="Something went wrong"
+          />
         )}
       </div>
     </>
@@ -108,7 +125,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   try {
     const productIds = await getUserCartProductIds(userId);
 
-    if (!productIds) {
+    if (!productIds || productIds?.length === 0) {
       return {
         props: {
           cookie: true,

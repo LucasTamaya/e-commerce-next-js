@@ -61,8 +61,6 @@ describe("Product Page", () => {
       fireEvent.click(addToCartBtn);
     });
 
-    screen.debug();
-
     expect(
       await screen.findByText("Product correctly added to cart")
     ).toBeInTheDocument();
@@ -102,8 +100,37 @@ describe("Product Page", () => {
       fireEvent.click(addToCartBtn);
     });
 
-    screen.debug();
-
     expect(await screen.findByText("Please sign-in first")).toBeInTheDocument();
+  });
+
+  it("should renders an error message if the fetch request fails", async () => {
+    // simulates that we don't have cookies on that request
+    server.use(
+      rest.post("*/cart/add*", (req, res, ctx) => {
+        console.log(req);
+
+        return res(ctx.status(500));
+      })
+    );
+
+    renderWithClient(
+      <Product
+        id={1}
+        category="shirt"
+        description="A simple white shirt"
+        image="https://product.jpg"
+        price={20}
+        rating={{ count: 8, rate: 8 }}
+        title="A white shirt"
+      />
+    );
+
+    const addToCartBtn = screen.getByText("Add to cart");
+
+    act(() => {
+      fireEvent.click(addToCartBtn);
+    });
+
+    expect(await screen.findByText("Something went wrong")).toBeInTheDocument();
   });
 });

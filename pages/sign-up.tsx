@@ -21,7 +21,7 @@ const SignUp: NextPage = () => {
     resolver: yupResolver(loginValidationSchema),
   });
 
-  const [cookie, setCookie] = useCookies(["userId"]);
+  const [_, setCookie] = useCookies(["userId"]);
 
   const router = useRouter();
 

@@ -6,9 +6,9 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { NextPage } from "next";
 
 interface Props {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  error: boolean;
+  openSnackBar: boolean;
+  setOpenSnackBar: Dispatch<SetStateAction<boolean>>;
+  severity: "success" | "warning" | "error";
   message: string;
 }
 
@@ -20,17 +20,17 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export const SnackBar: NextPage<Props> = ({
-  open,
-  setOpen,
-  error,
+  openSnackBar,
+  setOpenSnackBar,
+  severity,
   message,
 }) => {
-  const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+  const closeSnackBar = (event: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setOpen(false);
+    setOpenSnackBar(false);
   };
 
   const action = (
@@ -39,7 +39,7 @@ export const SnackBar: NextPage<Props> = ({
         size="small"
         aria-label="close"
         color="inherit"
-        onClick={handleClose}
+        onClick={closeSnackBar}
       >
         <CloseIcon fontSize="small" />
       </IconButton>
@@ -47,28 +47,21 @@ export const SnackBar: NextPage<Props> = ({
   );
 
   return (
-    <div>
-      {/* <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={message}
-        action={action}
-      /> */}
+    <>
       <Snackbar
-        open={open}
+        open={openSnackBar}
         autoHideDuration={6000}
-        onClose={handleClose}
+        onClose={closeSnackBar}
         action={action}
       >
         <Alert
-          onClose={handleClose}
-          severity={error ? "warning" : "success"}
+          onClose={closeSnackBar}
+          severity={severity}
           sx={{ width: "100%" }}
         >
           {message}
         </Alert>
       </Snackbar>
-    </div>
+    </>
   );
 };
