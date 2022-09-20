@@ -7,6 +7,13 @@ This project is a small e-commerce site that allowed me to discover the Stripe a
 ## Technologies used
 
 ![ts_icon](https://img.icons8.com/color/100/typescript.png)
+![firebase_icon](https://img.icons8.com/color/100/firebase.png)
+![stripe_icon](https://img.icons8.com/stickers/100/stripe.png)
+![tailwind_icon](https://seeklogo.com/images/T/tailwind-css-logo-5AD4175897-seeklogo.com.png)
+![next-js_icon](https://seeklogo.com/images/N/next-js-logo-7929BCD36F-seeklogo.com.png)
+
+
+
 
 
 ## Getting Started
