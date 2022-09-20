@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Project Description
+
+This project is a small e-commerce site that allowed me to discover the Stripe api. We can authenticate ourselves, add products to our cart and make a purchase.
+
+## Technologies used
+
+![alt text](https://img.icons8.com/color/344/typescript.png)
+
+
 ## Getting Started
 
 First, run the development server:
