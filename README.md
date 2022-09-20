@@ -6,7 +6,7 @@ This project is a small e-commerce site that allowed me to discover the Stripe a
 
 ## Technologies used
 
-![ts_icon](https://img.icons8.com/color/344/typescript.png | width=50)
+![ts_icon](https://img.icons8.com/color/100/typescript.png)
 
 
 ## Getting Started
