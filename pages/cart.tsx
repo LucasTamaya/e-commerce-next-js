@@ -1,5 +1,6 @@
 import type { NextPage, NextPageContext } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
@@ -10,6 +11,8 @@ import { getUserCartProductIds, getUserCartProducts } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import { SnackBar } from "@/components/Common/SnackBar";
+import axios from "axios";
+import { BASE_URL } from "src/utils/baseUrl";
 
 interface Props {
   cookie: boolean;
@@ -22,6 +25,10 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
   const [deleteProductId, setDeleteProductId] = useState<number>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
+
+  const router = useRouter();
+
+  console.log(cartProducts);
 
   const { mutate, isLoading, isError, isSuccess } =
     useDeleteProductFromCart(deleteProductId);
@@ -48,6 +55,13 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     setCartProducts(updatedCartProducts);
     setCartTotalAmount((prev) => prev - cartProducts[idx].price);
     setDeleteProductId(cartProducts[idx].id);
+  };
+
+  const handleCheckout = async () => {
+    const { data } = await axios.post(`${BASE_URL}/api/checkout`, {
+      products: cartProducts,
+    });
+    router.replace(data.url);
   };
 
   if (!cookie) {
@@ -92,7 +106,9 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
                 </li>
               ))}
             </ul>
-            <Button filled={true}>Proceed to checkout</Button>
+            <Button filled={true} onClick={handleCheckout}>
+              Proceed to checkout
+            </Button>
           </>
         )}
 

@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export interface IProduct {
   category: string;
   description: string;
@@ -38,4 +40,10 @@ export interface IEnvVariables {
   storageBucket: string | undefined;
   messagingSenderId: string | undefined;
   appId: string | undefined;
+}
+
+export interface ILineItems {
+  id: number;
+  price: string;
+  quantity: number;
 }
