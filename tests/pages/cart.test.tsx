@@ -34,6 +34,14 @@ describe("Cart Component", () => {
     expect(screen.getByText("Please sign-in first")).toBeInTheDocument();
   });
 
+  it("should renders a checkout button if there are some products", () => {
+    renderWithClient(
+      <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
+    );
+
+    expect(screen.getByText("Proceed to checkout")).toBeInTheDocument();
+  });
+
   it("should renders some products if the user has added any", () => {
     renderWithClient(
       <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
@@ -66,32 +74,9 @@ describe("Cart Component", () => {
     expect(screen.getAllByRole("img")).toHaveLength(2);
   });
 
-  // it("should update the total amount when we delete a product", () => {
-  //   // Mock useState function
-  //   const setStateMock = jest.fn();
-  //   const totalAmountMock = 75.28;
-  //   const useStateMock: any = (initState: any = totalAmountMock) => [
-  //     initState,
-  //     setStateMock,
-  //   ];
+  // it("should ");
 
-  //   jest.spyOn(React, "useState").mockImplementation(useStateMock);
-
-  //   render(
-  //     <Cart
-  //       cookie={true}
-  //       products={mockCartProducts}
-  //       totalAmount={totalAmountMock}
-  //     />
-  //   );
-
-  //   act(() => {
-  //     fireEvent.click(screen.getAllByText("Delete from cart")[0]);
-  //   });
-
-  //   // expect(setStateMock).toHaveBeenCalledTimes(0);
-  //   expect(screen.getByText("Total amount: $52.98")).toBeInTheDocument();
-  // });
+  // it("should update the total amount when we delete a product", () => {});
 
   // it("should renders an error message if the fetch request fails in the getServerSideProps", () => {});
 });

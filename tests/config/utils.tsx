@@ -21,6 +21,18 @@ export const handlers = [
       })
     );
   }),
+  rest.post("*/cart/delete*", (req, res, ctx) => {
+    console.log(req);
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        error: false,
+        message: "Product correctly deleted",
+        userId: "gae54tyje3748vidj",
+      })
+    );
+  }),
 ];
 
 const createTestQueryClient = () =>

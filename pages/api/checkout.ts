@@ -2,7 +2,7 @@ import { BASE_URL } from "src/utils/baseUrl";
 import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
-import { ILineItems, IProduct } from "@/interfaces/*";
+import { IProduct } from "@/interfaces/*";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,13 +10,7 @@ export default async function handler(
 ) {
   const { products } = req.body;
 
-  // const lineItems: ILineItems[] = products.map((product: IProduct) => {
-  //   return {
-  //     id: product.id,
-  //     price: product.price.toString(),
-  //     quantity: 1,
-  //   };
-  // });
+  console.log(products);
 
   const lineItems: any[] = products.map((product: IProduct) => {
     return {
@@ -25,8 +19,7 @@ export default async function handler(
         product_data: {
           name: product.title,
         },
-        // unit_amount: product.price,
-        unit_amount: 1000,
+        unit_amount: product.price * 100, // to convert dollars to cents ,
       },
       quantity: 1,
     };
@@ -34,36 +27,23 @@ export default async function handler(
 
   console.log(lineItems);
 
-  const stripe = new Stripe(
-    "sk_test_51HlHhPEudO3PtUGN0yy35QAtyqVWPbtI9dO71otFnN6oVm3UkAbDzAaZIGHf9Jcstm8DMPEKVtoYnBizwaUcujwF008N4Vr70P",
-    {
-      apiVersion: "2022-08-01",
-      typescript: true,
-    }
-  );
-
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      line_items: lineItems,
-      success_url: `${BASE_URL}/success`,
-      cancel_url: `${BASE_URL}/cancel`,
-    });
-    return res.json({ url: session.url });
+    if (process.env.STRIPE_API_KEY) {
+      const stripe = new Stripe(process.env.STRIPE_API_KEY, {
+        apiVersion: "2022-08-01",
+        typescript: true,
+      });
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        mode: "payment",
+        line_items: lineItems,
+        success_url: `${BASE_URL}/success`,
+        cancel_url: `${BASE_URL}/cancel`,
+      });
+      return res.json({ url: session.url });
+    }
   } catch (err: any) {
     console.log(err.message);
   }
-
-  // const stripe = await getStripe();
-
-  // const data = await stripe?.redirectToCheckout({
-  //   mode: "payment",
-  //   lineItems,
-  //   successUrl: window.location.origin,
-  //   cancelUrl: window.location.origin,
-
-  // });
-
-  // console.log(data);
 }

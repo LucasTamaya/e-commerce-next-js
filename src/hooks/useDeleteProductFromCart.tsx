@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { BASE_URL } from "src/utils/baseUrl";
 
-const fetchDeleteProductToCart = async (
+const fetchDeleteProductFromCart = async (
   productId: number | undefined
 ): Promise<any> => {
   const { data } = await axios.post(`${BASE_URL}/api/cart/delete-product`, {
@@ -14,5 +14,5 @@ const fetchDeleteProductToCart = async (
 };
 
 export const useDeleteProductFromCart = (productId: number | undefined) => {
-  return useMutation(() => fetchDeleteProductToCart(productId));
+  return useMutation(() => fetchDeleteProductFromCart(productId));
 };

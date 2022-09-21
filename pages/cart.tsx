@@ -11,8 +11,7 @@ import { getUserCartProductIds, getUserCartProducts } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import { SnackBar } from "@/components/Common/SnackBar";
-import axios from "axios";
-import { BASE_URL } from "src/utils/baseUrl";
+import { useCheckout } from "src/hooks/useCheckout";
 
 interface Props {
   cookie: boolean;
@@ -28,24 +27,44 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
 
   const router = useRouter();
 
-  console.log(cartProducts);
+  const {
+    mutate: deleteProduct,
+    isLoading: deleteLoading,
+    isError: deleteError,
+    isSuccess: deleteSuccess,
+  } = useDeleteProductFromCart(deleteProductId);
 
-  const { mutate, isLoading, isError, isSuccess } =
-    useDeleteProductFromCart(deleteProductId);
+  const {
+    mutate: openCheckout,
+    data: openCheckoutData,
+    isLoading: openCheckoutLoading,
+    isError: openCheckoutError,
+    isSuccess: openCheckoutSuccess,
+  } = useCheckout(cartProducts);
 
+  // handle when we delete a product
   useEffect(() => {
     // run the code only if a deleteProductId is available
     if (deleteProductId) {
-      mutate();
+      deleteProduct();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteProductId]);
 
+  // handle the checkout
   useEffect(() => {
-    if (isSuccess || isError) {
+    if (openCheckoutSuccess) {
+      router.replace(openCheckoutData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openCheckoutSuccess]);
+
+  // handle if there are any errors when we delete a product or when whe proceed to checkout
+  useEffect(() => {
+    if (deleteError || openCheckoutError) {
       setOpenSnackBar(true);
     }
-  }, [isSuccess, isError]);
+  }, [deleteError, openCheckoutError]);
 
   const handleDelete = async (idx: number) => {
     // filter the array with the index of the deleted product
@@ -55,13 +74,6 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     setCartProducts(updatedCartProducts);
     setCartTotalAmount((prev) => prev - cartProducts[idx].price);
     setDeleteProductId(cartProducts[idx].id);
-  };
-
-  const handleCheckout = async () => {
-    const { data } = await axios.post(`${BASE_URL}/api/checkout`, {
-      products: cartProducts,
-    });
-    router.replace(data.url);
   };
 
   if (!cookie) {
@@ -101,25 +113,30 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
                     price={price}
                   />
                   <Button filled={true} onClick={() => handleDelete(idx)}>
-                    {!isLoading ? <>Delete from cart</> : <>Loading...</>}
+                    {!deleteLoading ? <>Delete from cart</> : <>Loading...</>}
                   </Button>
                 </li>
               ))}
             </ul>
-            <Button filled={true} onClick={handleCheckout}>
-              Proceed to checkout
+            <Button filled={true} onClick={openCheckout}>
+              {!openCheckoutLoading ? (
+                <>Proceed to checkout</>
+              ) : (
+                <>Loading...</>
+              )}
             </Button>
           </>
         )}
 
-        {isError && (
-          <SnackBar
-            openSnackBar={openSnackBar}
-            setOpenSnackBar={setOpenSnackBar}
-            severity="error"
-            message="Something went wrong"
-          />
-        )}
+        {deleteError ||
+          (openCheckoutError && (
+            <SnackBar
+              openSnackBar={openSnackBar}
+              setOpenSnackBar={setOpenSnackBar}
+              severity="error"
+              message="Something went wrong"
+            />
+          ))}
       </div>
     </>
   );

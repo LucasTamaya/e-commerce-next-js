@@ -14,8 +14,6 @@ export default async function handler(
 ) {
   const { body, cookies } = req;
 
-  console.log(cookies);
-
   if (!cookies.userId) {
     return res.json({ error: true, message: "Please sign-in first" });
   }
