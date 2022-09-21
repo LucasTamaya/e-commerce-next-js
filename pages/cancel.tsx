@@ -14,12 +14,16 @@ const Cancel: NextPage<Props> = ({}) => {
       <h1 className="font-bold text-3xl mb-12">
         Something went wrong during the checkout
       </h1>
-      <Button filled={false} onClick={() => routerPush(router, "/cart")}>
-        Try again
-      </Button>
-      <Button filled={true} onClick={() => routerPush(router, "/")}>
-        Go back to the store
-      </Button>
+      <div className="w-[400px] mb-5">
+        <Button filled={false} onClick={() => routerPush(router, "/cart")}>
+          Try again
+        </Button>
+      </div>
+      <div className="w-[400px]">
+        <Button filled={true} onClick={() => routerPush(router, "/")}>
+          Go back to the store
+        </Button>
+      </div>
     </div>
   );
 };

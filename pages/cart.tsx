@@ -27,13 +27,14 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
 
   const router = useRouter();
 
+  // query hook to delete product
   const {
     mutate: deleteProduct,
-    isLoading: deleteLoading,
     isError: deleteError,
     isSuccess: deleteSuccess,
   } = useDeleteProductFromCart(deleteProductId);
 
+  // query hook to open the Stripe checkout
   const {
     mutate: openCheckout,
     data: openCheckoutData,
@@ -61,10 +62,10 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
 
   // handle if there are any errors when we delete a product or when whe proceed to checkout
   useEffect(() => {
-    if (deleteError || openCheckoutError) {
+    if (deleteError || deleteSuccess || openCheckoutError) {
       setOpenSnackBar(true);
     }
-  }, [deleteError, openCheckoutError]);
+  }, [deleteError, deleteSuccess, openCheckoutError]);
 
   const handleDelete = async (idx: number) => {
     // filter the array with the index of the deleted product
@@ -113,7 +114,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
                     price={price}
                   />
                   <Button filled={true} onClick={() => handleDelete(idx)}>
-                    {!deleteLoading ? <>Delete from cart</> : <>Loading...</>}
+                    Delete from cart
                   </Button>
                 </li>
               ))}
@@ -137,6 +138,17 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
               message="Something went wrong"
             />
           ))}
+
+        {deleteSuccess && (
+          <SnackBar
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity="success"
+            message="Product deleted from cart"
+          />
+        )}
+
+        {openCheckoutSuccess && <p>Checkout Success</p>}
       </div>
     </>
   );

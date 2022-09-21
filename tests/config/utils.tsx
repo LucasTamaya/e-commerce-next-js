@@ -10,8 +10,6 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(menProducts));
   }),
   rest.post("*/cart/add*", (req, res, ctx) => {
-    console.log(req);
-
     return res(
       ctx.status(200),
       ctx.json({
@@ -22,14 +20,20 @@ export const handlers = [
     );
   }),
   rest.post("*/cart/delete*", (req, res, ctx) => {
-    console.log(req);
-
     return res(
       ctx.status(200),
       ctx.json({
         error: false,
         message: "Product correctly deleted",
         userId: "gae54tyje3748vidj",
+      })
+    );
+  }),
+  rest.post("*/checkout*", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        url: "https://stripe-checkout-test.com",
       })
     );
   }),

@@ -1,10 +1,12 @@
 import { fireEvent, screen } from "@testing-library/react";
-import Cart from "@/pages/cart";
-import { mockCartProducts } from "tests/mockData/cartProducts";
 import { act } from "react-dom/test-utils";
-// import { doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
+
+import Cart from "@/pages/cart";
 import { renderWithClient } from "@/config/utils";
+import { mockCartProducts } from "tests/mockData/cartProducts";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import { createMockRouter } from "tests/utils/createMockRouter";
 
 jest.mock("firebase/firestore", () => ({
   doc: jest.fn(),
@@ -74,7 +76,27 @@ describe("Cart Component", () => {
     expect(screen.getAllByRole("img")).toHaveLength(2);
   });
 
-  // it("should ");
+  it("should redirect the user to the stripe checkout page", async () => {
+    const router = createMockRouter({});
+
+    renderWithClient(
+      <RouterContext.Provider value={router}>
+        <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
+      </RouterContext.Provider>
+    );
+
+    act(() => {
+      fireEvent.click(
+        screen.getByRole("button", { name: "Proceed to checkout" })
+      );
+    });
+
+    expect(await screen.findByText("Checkout Success")).toBeTruthy();
+    expect(router.replace).toHaveBeenCalledTimes(1);
+    expect(router.replace).toHaveBeenCalledWith(
+      "https://stripe-checkout-test.com"
+    );
+  });
 
   // it("should update the total amount when we delete a product", () => {});
 
