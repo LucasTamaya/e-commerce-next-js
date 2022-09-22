@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
-import { BeatLoader } from "react-spinners";
 
 import {
   googleProvider,
@@ -22,7 +21,7 @@ const SignIn: NextPage = () => {
     resolver: yupResolver(loginValidationSchema),
   });
 
-  const [cookie, setCookie] = useCookies(["userId"]);
+  const [_, setCookie] = useCookies(["userId"]);
 
   const router = useRouter();
 

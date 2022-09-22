@@ -1,5 +1,3 @@
-import { number } from "yup";
-
 export interface IProduct {
   category: string;
   description: string;
@@ -43,7 +41,21 @@ export interface IEnvVariables {
 }
 
 export interface ILineItems {
-  id: number;
-  price: string;
+  price_data: {
+    currency: string;
+    product_data: {
+      name: string;
+    };
+    unit_amount: number;
+  };
   quantity: number;
 }
+
+// price_data: {
+//   currency: "usd",
+//   product_data: {
+//     name: product.title,
+//   },
+//   unit_amount: product.price * 100, // convert dollars to cents ,
+// },
+// quantity: 1,

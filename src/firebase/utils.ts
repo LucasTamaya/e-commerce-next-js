@@ -1,6 +1,9 @@
 import axios from "axios";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { BASE_URL } from "src/utils/baseUrl";
+import Stripe from "stripe";
 import { db } from "./firebase-config";
+import { ILineItems } from "../interfaces/index";
 
 export const createUserCart = async (userId: string) => {
   const userRef = doc(db, "users", userId);
@@ -33,4 +36,23 @@ export const getUserCartProducts = async (productIds: number[]) => {
   );
 
   return products;
+};
+
+export const getStripeSession = async (lineItems: ILineItems[]) => {
+  if (process.env.STRIPE_API_KEY) {
+    const stripe = new Stripe(process.env.STRIPE_API_KEY, {
+      apiVersion: "2022-08-01",
+      typescript: true,
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: lineItems,
+      success_url: `${BASE_URL}/success`,
+      cancel_url: `${BASE_URL}/cancel`,
+    });
+
+    return session.url;
+  }
 };
