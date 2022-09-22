@@ -62,10 +62,15 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
 
   // handle if there are any errors when we delete a product or when whe proceed to checkout
   useEffect(() => {
-    if (deleteError || deleteSuccess || openCheckoutError) {
+    if (
+      deleteError ||
+      deleteSuccess ||
+      openCheckoutError ||
+      openCheckoutSuccess
+    ) {
       setOpenSnackBar(true);
     }
-  }, [deleteError, deleteSuccess, openCheckoutError]);
+  }, [deleteError, deleteSuccess, openCheckoutError, openCheckoutSuccess]);
 
   const handleDelete = async (idx: number) => {
     // filter the array with the index of the deleted product
@@ -85,6 +90,23 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
             Please sign-in first
           </button>
         </Link>
+      </div>
+    );
+  }
+
+  // layout before the user is redirected to the stripe checkout page
+  if (openCheckoutSuccess) {
+    return (
+      <div className="w-full h-[70vh] flex justify-center items-center">
+        <p className="font-bold text-3xl">Redirection to Stripe checkout</p>
+        {openCheckoutSuccess && (
+          <SnackBar
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity="success"
+            message="Redirection to Stripe checkout"
+          />
+        )}
       </div>
     );
   }

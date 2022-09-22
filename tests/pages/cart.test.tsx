@@ -91,7 +91,9 @@ describe("Cart Component", () => {
       );
     });
 
-    expect(await screen.findByText("Checkout Success")).toBeTruthy();
+    expect(
+      await screen.findByText("Redirection to Stripe checkout")
+    ).toBeInTheDocument();
     expect(router.replace).toHaveBeenCalledTimes(1);
     expect(router.replace).toHaveBeenCalledWith(
       "https://stripe-checkout-test.com"
