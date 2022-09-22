@@ -147,8 +147,6 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
             message="Product deleted from cart"
           />
         )}
-
-        {openCheckoutSuccess && <p>Checkout Success</p>}
       </div>
     </>
   );
