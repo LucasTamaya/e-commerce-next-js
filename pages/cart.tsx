@@ -12,6 +12,7 @@ import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import { SnackBar } from "@/components/Common/SnackBar";
 import { useCheckout } from "src/hooks/useCheckout";
+import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
   cookie: boolean;
@@ -97,24 +98,20 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
   // layout before the user is redirected to the stripe checkout page
   if (openCheckoutSuccess) {
     return (
-      <div className="w-full h-[70vh] flex justify-center items-center">
-        <p className="font-bold text-3xl">Redirection to Stripe checkout</p>
-        {openCheckoutSuccess && (
-          <SnackBar
-            openSnackBar={openSnackBar}
-            setOpenSnackBar={setOpenSnackBar}
-            severity="success"
-            message="Redirection to Stripe checkout"
-          />
-        )}
-      </div>
+      <>
+        <LayoutBeforeChekout
+          openCheckoutSuccess={openCheckoutSuccess}
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+        />
+      </>
     );
   }
 
   return (
     <>
       <Header />
-      <div className="max-w-[1200px] px-20 mx-auto">
+      <div className="px-20 mx-auto">
         <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
 
         {cartProducts.length === 0 && (
@@ -126,7 +123,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
             <p className="font-bold mb-5">
               Total amount: ${cartTotalAmount.toFixed(2)}
             </p>
-            <ul className="max-w-[1200px] grid grid-cols-3 gap-7 mx-auto mb-5">
+            <ul className="grid grid-cols-3 gap-7 mx-auto mb-5">
               {cartProducts.map(({ id, title, images, price }, idx) => (
                 <li key={id}>
                   <ProductCard

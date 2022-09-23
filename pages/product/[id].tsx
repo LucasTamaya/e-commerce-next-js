@@ -9,24 +9,61 @@ import Header from "@/components/Common/Header";
 import { useAddProductToCart } from "src/hooks/useAddProductToCart";
 import { SnackBar } from "@/components/Common/SnackBar";
 import { PLATZI_API_BASE_URL } from "src/utils/urls";
+import { useRouter } from "next/router";
 
-const Product: NextPage<IProduct> = ({
-  id,
-  title,
-  price,
-  description,
-  images,
-}) => {
+import { useCheckout } from "../../src/hooks/useCheckout";
+import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
+
+interface Props {
+  product: IProduct;
+}
+
+const Product: NextPage<Props> = ({ product }) => {
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+
+  const router = useRouter();
+
+  const { id, title, price, description, images }: IProduct = product;
+
+  // query hook to add product to cart
   const { mutate, isLoading, isError, isSuccess, data } =
     useAddProductToCart(id);
 
-  const [openSnackBar, setOpenSnackBar] = useState(false);
+  // query hook to open the Stripe checkout
+  const {
+    mutate: openCheckout,
+    data: openCheckoutData,
+    isLoading: openCheckoutLoading,
+    isError: openCheckoutError,
+    isSuccess: openCheckoutSuccess,
+  } = useCheckout([product]);
 
   useEffect(() => {
-    if (isSuccess || isError) {
+    if (isSuccess || isError || openCheckoutError) {
       setOpenSnackBar(true);
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, openCheckoutError]);
+
+  // handle the checkout
+  useEffect(() => {
+    if (openCheckoutSuccess) {
+      router.replace(openCheckoutData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openCheckoutSuccess]);
+
+  // layout before the user is redirected to the stripe checkout page
+  if (openCheckoutSuccess) {
+    return (
+      <>
+        <LayoutBeforeChekout
+          openCheckoutSuccess={openCheckoutSuccess}
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+        />
+      </>
+    );
+  }
 
   return (
     <>
@@ -38,8 +75,10 @@ const Product: NextPage<IProduct> = ({
             <h3 className="font-bold text-xl">{title}</h3>
             <p>${price}</p>
             <p>{description}</p>
-            <Button filled={true}>Buy now</Button>
-            <Button filled={false} onClick={() => mutate()}>
+            <Button filled={true} onClick={openCheckout}>
+              {!openCheckoutLoading ? <>Buy now</> : <>Loading</>}
+            </Button>
+            <Button filled={false} onClick={mutate}>
               {!isLoading ? <>Add to cart</> : <>Loading...</>}
             </Button>
           </div>
@@ -62,6 +101,15 @@ const Product: NextPage<IProduct> = ({
             message={data.message}
           />
         )}
+
+        {openCheckoutError && (
+          <SnackBar
+            openSnackBar={openSnackBar}
+            setOpenSnackBar={setOpenSnackBar}
+            severity="error"
+            message="Something went wrong"
+          />
+        )}
       </div>
     </>
   );
@@ -76,15 +124,9 @@ export const getServerSideProps = async (context: NextPageContext) => {
     `${PLATZI_API_BASE_URL}/products/${query.id}`
   );
 
-  const { id, title, price, description, images }: IProduct = data;
-
   return {
     props: {
-      id,
-      title,
-      price,
-      description,
-      images,
+      product: data,
     },
   };
 };

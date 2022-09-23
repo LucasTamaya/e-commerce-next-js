@@ -30,5 +30,6 @@ export default async function handler(
     return res.json({ url: session });
   } catch (err: any) {
     console.log(err.message);
+    res.status(400).json({ message: err.message });
   }
 }
