@@ -1,6 +1,7 @@
+import { PLATZI_API_BASE_URL } from "./../utils/urls";
 import axios from "axios";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { BASE_URL } from "src/utils/baseUrl";
+import { BASE_URL } from "src/utils/urls";
 import Stripe from "stripe";
 import { db } from "./firebase-config";
 import { ILineItems } from "../interfaces/index";
@@ -28,9 +29,7 @@ export const getUserCartProductIds = async (userId: string) => {
 export const getUserCartProducts = async (productIds: number[]) => {
   const products = await Promise.all(
     productIds.map(async (id) => {
-      const { data } = await axios.get(
-        `https://fakestoreapi.com/products/${id}`
-      );
+      const { data } = await axios.get(`${PLATZI_API_BASE_URL}/products/${id}`);
       return data;
     })
   );

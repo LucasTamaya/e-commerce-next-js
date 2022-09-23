@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-import { BASE_URL } from "src/utils/baseUrl";
+import { BASE_URL } from "src/utils/urls";
 import { IProduct } from "@/interfaces/*";
 
 const fetchCheckout = async (products: IProduct[]) => {

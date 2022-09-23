@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-import { BASE_URL } from "src/utils/baseUrl";
+import { BASE_URL } from "src/utils/urls";
 
 const fetchDeleteProductFromCart = async (
   productId: number | undefined

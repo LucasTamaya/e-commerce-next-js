@@ -127,12 +127,12 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
               Total amount: ${cartTotalAmount.toFixed(2)}
             </p>
             <ul className="max-w-[1200px] grid grid-cols-3 gap-7 mx-auto mb-5">
-              {cartProducts.map(({ id, title, image, price }, idx) => (
+              {cartProducts.map(({ id, title, images, price }, idx) => (
                 <li key={id}>
                   <ProductCard
                     id={id}
                     title={title}
-                    image={image}
+                    image={images[0]}
                     price={price}
                   />
                   <Button filled={true} onClick={() => handleDelete(idx)}>

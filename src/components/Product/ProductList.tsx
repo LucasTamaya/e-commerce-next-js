@@ -1,17 +1,15 @@
-import type { NextPage } from "next";
-
 import { useProductsByCategory } from "src/hooks/useProductsByCategory";
 import Header from "../Common/Header";
 import ProductCard from "./ProductCard";
 
 interface Props {
-  category: string;
+  fetchDetails: string;
   title: string;
 }
 
-const ProductList: NextPage<Props> = ({ category, title }) => {
+const ProductList: React.FC<Props> = ({ fetchDetails, title }) => {
   const { isLoading, isError, isSuccess, data } =
-    useProductsByCategory(category);
+    useProductsByCategory(fetchDetails);
 
   return (
     <section>
@@ -28,9 +26,14 @@ const ProductList: NextPage<Props> = ({ category, title }) => {
 
       {isSuccess && (
         <ul className="max-w-[1300px] grid grid-cols-3 gap-7 mx-auto">
-          {data.map(({ id, title, image, price }) => (
+          {data.map(({ id, title, images, price }) => (
             <li key={id}>
-              <ProductCard id={id} title={title} image={image} price={price} />
+              <ProductCard
+                id={id}
+                title={title}
+                image={images[0]}
+                price={price}
+              />
             </li>
           ))}
         </ul>

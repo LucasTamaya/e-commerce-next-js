@@ -6,10 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { menProducts } from "tests/mockData/menProducts";
 
 export const handlers = [
-  rest.get("*/category/men*", (_, res, ctx) => {
+  rest.get("*/products*", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(menProducts));
   }),
-  rest.post("*/cart/add*", (req, res, ctx) => {
+  rest.post("*/cart/add*", (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

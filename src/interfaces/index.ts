@@ -1,16 +1,9 @@
 export interface IProduct {
-  category: string;
   description: string;
   id: number;
-  image: string;
+  images: string[];
   price: number;
-  rating: IRating;
   title: string;
-}
-
-export interface IRating {
-  rate: number;
-  count: number;
 }
 
 export interface IProductCard {

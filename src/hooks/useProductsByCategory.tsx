@@ -2,21 +2,31 @@ import axios from "axios";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { IProduct } from "../interfaces";
+import { PLATZI_API_BASE_URL } from "src/utils/urls";
 
 const fetchProductsByCategory = async (
-  category: string
+  fetchDetails: string
 ): Promise<IProduct[]> => {
-  const { data } = await axios.get(
-    `https://fakestoreapi.com/products/category/${category}`
-  );
+  const { data } = await axios.get(`${PLATZI_API_BASE_URL}/${fetchDetails}`);
 
-  return data;
+  const productsWithImage = data.filter((product: IProduct) => {
+    if (
+      product.images[0] !== "" &&
+      product.images[0].indexOf("about-mision.png") === -1
+    ) {
+      return product;
+    }
+  });
+
+  console.log(productsWithImage);
+
+  return productsWithImage;
 };
 
 export const useProductsByCategory = (
-  category: string
+  fetchDetails: string
 ): UseQueryResult<IProduct[]> => {
   return useQuery(["productsByCategory"], () =>
-    fetchProductsByCategory(category)
+    fetchProductsByCategory(fetchDetails)
   );
 };

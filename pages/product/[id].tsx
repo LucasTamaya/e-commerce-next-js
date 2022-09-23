@@ -8,14 +8,14 @@ import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { useAddProductToCart } from "src/hooks/useAddProductToCart";
 import { SnackBar } from "@/components/Common/SnackBar";
+import { PLATZI_API_BASE_URL } from "src/utils/urls";
 
 const Product: NextPage<IProduct> = ({
   id,
   title,
   price,
   description,
-  image,
-  rating,
+  images,
 }) => {
   const { mutate, isLoading, isError, isSuccess, data } =
     useAddProductToCart(id);
@@ -33,12 +33,11 @@ const Product: NextPage<IProduct> = ({
       <Header />
       <div className="relative w-full h-[80vh] flex flex-row justify-center items-center">
         <div className="max-w-[1000px] flex items-center gap-x-10 mx-auto">
-          <Image src={image} alt="product image" width={250} height={250} />
+          <Image src={images[0]} alt="product image" width={250} height={250} />
           <div className="flex-auto flex flex-col max-w-[700px] gap-y-3">
             <h3 className="font-bold text-xl">{title}</h3>
             <p>${price}</p>
             <p>{description}</p>
-            <p className="font-bold">Rating: {rating.rate}/10</p>
             <Button filled={true}>Buy now</Button>
             <Button filled={false} onClick={() => mutate()}>
               {!isLoading ? <>Add to cart</> : <>Loading...</>}
@@ -74,10 +73,10 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const { query } = context;
 
   const { data } = await axios.get(
-    `https://fakestoreapi.com/products/${query.id}`
+    `${PLATZI_API_BASE_URL}/products/${query.id}`
   );
 
-  const { id, title, price, description, image, rating }: IProduct = data;
+  const { id, title, price, description, images }: IProduct = data;
 
   return {
     props: {
@@ -85,8 +84,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
       title,
       price,
       description,
-      image,
-      rating,
+      images,
     },
   };
 };

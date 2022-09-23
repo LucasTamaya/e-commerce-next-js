@@ -7,7 +7,7 @@ import { renderWithClient } from "@/config/utils";
 describe("ProductList Component", () => {
   it("should renders the component", () => {
     const { getByText } = renderWithClient(
-      <ProductList category="men's clothing" title="Men's Products" />
+      <ProductList fetchDetails="products" title="Men's Products" />
     );
 
     expect(getByText(/Men's Products/i)).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe("ProductList Component", () => {
 
   it("should renders some ProductCards when the fetch request is done", async () => {
     const { findAllByText, findAllByRole } = renderWithClient(
-      <ProductList category="men's clothing" title="Men's Products" />
+      <ProductList fetchDetails="products" title="Men's Products" />
     );
 
     expect(await findAllByText("Product")).toHaveLength(4);
@@ -31,7 +31,7 @@ describe("ProductList Component", () => {
     );
 
     const { findByText } = renderWithClient(
-      <ProductList category="men's clothing" title="Men's Products" />
+      <ProductList fetchDetails="products" title="Men's Products" />
     );
 
     expect(
