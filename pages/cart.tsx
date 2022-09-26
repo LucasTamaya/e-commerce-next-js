@@ -16,19 +16,17 @@ import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
   cookie: boolean;
-  productsWithQuantity: IProduct[];
+  products: IProduct[];
   totalAmount: number;
 }
 
-const Cart: NextPage<Props> = ({
-  cookie,
-  productsWithQuantity,
-  totalAmount,
-}) => {
-  const [cartProducts, setCartProducts] = useState(productsWithQuantity);
+const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
+  const [cartProducts, setCartProducts] = useState(products);
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
   const [deleteProductId, setDeleteProductId] = useState<number>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
+
+  console.log(cartProducts);
 
   const router = useRouter();
 
@@ -115,7 +113,7 @@ const Cart: NextPage<Props> = ({
   return (
     <>
       <Header />
-      <div className="px-20 mx-auto">
+      <div className="px-20 pb-10 mx-auto">
         <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
 
         {cartProducts.length === 0 && (
@@ -199,14 +197,14 @@ export const getServerSideProps = async (context: NextPageContext) => {
       };
     }
 
-    const products = await getUserCartProducts(productIds);
+    const cartProducts = await getUserCartProducts(productIds);
 
     const quantities = data?.map((product: IFirebaseCart) => product.quantity);
 
     if (quantities) {
-      const totalAmount = getCartTotalAmount(products, quantities);
+      const totalAmount = getCartTotalAmount(cartProducts, quantities);
 
-      const productsWithQuantity = products.map((product: IProduct, index) => {
+      const products = cartProducts.map((product: IProduct, index) => {
         return {
           ...product,
           quantity: quantities[index],
@@ -216,7 +214,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
       return {
         props: {
           cookie: true,
-          productsWithQuantity,
+          products,
           totalAmount,
         },
       };

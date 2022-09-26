@@ -11,8 +11,10 @@ const fetchProductsByCategory = async (
 
   const productsWithImage = data.filter((product: IProduct) => {
     if (
-      product.images[0] !== "" &&
-      product.images[0].indexOf("about-mision.png") === -1
+      (product.images[0] !== "" &&
+        product.images[0].indexOf("about-mision.png") === -1 &&
+        product.images[0].indexOf("http") !== -1) ||
+      product.images[0].indexOf("https") !== -1
     ) {
       return product;
     }

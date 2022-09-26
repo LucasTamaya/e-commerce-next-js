@@ -1,5 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  doc,
+  updateDoc,
+  where,
+  deleteField,
+} from "firebase/firestore";
 import { db } from "src/firebase/firebase-config";
 
 interface IData {
@@ -22,7 +28,9 @@ export default async function handler(
   const docRef = doc(db, "users", cookies.userId);
 
   try {
-    await updateDoc(docRef, { cart: arrayRemove(body.productId) });
+    await updateDoc(docRef, {
+      cart: arrayRemove({ productId: body.productId }),
+    });
     return res.json({
       error: false,
       message: "Product correctly deleted",

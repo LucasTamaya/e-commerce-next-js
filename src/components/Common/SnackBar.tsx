@@ -3,7 +3,6 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { NextPage } from "next";
 
 interface Props {
   openSnackBar: boolean;
@@ -19,7 +18,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export const SnackBar: NextPage<Props> = ({
+export const SnackBar: React.FC<Props> = ({
   openSnackBar,
   setOpenSnackBar,
   severity,

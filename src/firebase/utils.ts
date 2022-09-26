@@ -19,15 +19,9 @@ export const getUserCartData = async (
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    // const productIds: number[] = docSnap
-    //   .data()
-    //   .cart.map((product: IFirebaseCart) => product.productId);
-
     const userCartData: IFirebaseCart[] = docSnap.data().cart;
+    console.log(userCartData);
 
-    // if (productIds.length === 0) {
-    // return [];
-    // }
     return userCartData;
   }
 };

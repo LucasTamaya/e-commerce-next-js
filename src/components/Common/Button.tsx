@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { ReactNode } from "react";
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   onClick?: () => any;
 }
 
-const Button: NextPage<Props> = ({ children, filled, onClick }) => {
+const Button: React.FC<Props> = ({ children, filled, onClick }) => {
   return (
     <button
       className={`${

@@ -1,9 +1,21 @@
-import type { NextPage } from "next";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 
-interface Props {}
+const Navbar: React.FC = () => {
+  const [cookie] = useCookies(["userId"]);
 
-const Navbar: NextPage<Props> = ({}) => {
+  if (!cookie.userId) {
+    return (
+      <nav>
+        <ul className="flex flex-row items-center gap-x-5">
+          <li className="text-white transition duration-150 hover:text-gray-500">
+            <Link href="/sign-in">Sign-in</Link>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
+
   return (
     <nav>
       <ul className="flex flex-row items-center gap-x-5">
@@ -23,7 +35,7 @@ const Navbar: NextPage<Props> = ({}) => {
           <Link href="/products/others">Others</Link>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/sign-in">Sign-in</Link>
+          <p>Sign-out</p>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
           <Link href="/cart">Cart</Link>

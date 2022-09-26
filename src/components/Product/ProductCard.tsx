@@ -1,10 +1,9 @@
-import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { IProductCard } from "../../interfaces";
 
-const ProductCard: NextPage<IProductCard> = ({ id, title, image, price }) => {
+const ProductCard: React.FC<IProductCard> = ({ id, title, image, price }) => {
   return (
     <div className="relative">
       <p className="absolute top-5 left-5 font-bold">${price}</p>
