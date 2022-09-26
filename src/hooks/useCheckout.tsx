@@ -9,6 +9,8 @@ const fetchCheckout = async (products: IProduct[]) => {
     products,
   });
 
+  console.log(data);
+
   return data.url;
 };
 

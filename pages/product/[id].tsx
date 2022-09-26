@@ -15,19 +15,26 @@ import { useCheckout } from "../../src/hooks/useCheckout";
 import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
-  product: IProduct;
+  productData: IProduct;
 }
 
-const Product: NextPage<Props> = ({ product }) => {
+const Product: NextPage<Props> = ({ productData }) => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [product, setProduct] = useState(productData);
+  const [productQuantity, setProductQuantity] = useState(1);
 
   const router = useRouter();
 
   const { id, title, price, description, images }: IProduct = product;
 
   // query hook to add product to cart
-  const { mutate, isLoading, isError, isSuccess, data } =
-    useAddProductToCart(id);
+  const {
+    mutate,
+    isLoading,
+    isError,
+    isSuccess: addToCartSuccess,
+    data,
+  } = useAddProductToCart(id, productQuantity);
 
   // query hook to open the Stripe checkout
   const {
@@ -38,11 +45,12 @@ const Product: NextPage<Props> = ({ product }) => {
     isSuccess: openCheckoutSuccess,
   } = useCheckout([product]);
 
+  // handle request's success and error
   useEffect(() => {
-    if (isSuccess || isError || openCheckoutError) {
+    if (addToCartSuccess || isError || openCheckoutError) {
       setOpenSnackBar(true);
     }
-  }, [isSuccess, isError, openCheckoutError]);
+  }, [addToCartSuccess, isError, openCheckoutError]);
 
   // handle the checkout
   useEffect(() => {
@@ -51,6 +59,16 @@ const Product: NextPage<Props> = ({ product }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCheckoutSuccess]);
+
+  // handle when we change the quantity of product
+  useEffect(() => {
+    setProduct((prev) => {
+      return {
+        ...prev,
+        quantity: productQuantity,
+      };
+    });
+  }, [productQuantity]);
 
   // layout before the user is redirected to the stripe checkout page
   if (openCheckoutSuccess) {
@@ -75,6 +93,16 @@ const Product: NextPage<Props> = ({ product }) => {
             <h3 className="font-bold text-xl">{title}</h3>
             <p>${price}</p>
             <p>{description}</p>
+            <label htmlFor="quantity" className="font-bold">
+              Select a quantity:
+            </label>
+            <input
+              type="number"
+              id="quantity"
+              defaultValue={1}
+              className="border border-black w-12 pl-4 py-1"
+              onChange={(e) => setProductQuantity(e.target.valueAsNumber)}
+            />
             <Button filled={true} onClick={openCheckout}>
               {!openCheckoutLoading ? <>Buy now</> : <>Loading</>}
             </Button>
@@ -93,7 +121,7 @@ const Product: NextPage<Props> = ({ product }) => {
           />
         )}
 
-        {isSuccess && (
+        {addToCartSuccess && (
           <SnackBar
             openSnackBar={openSnackBar}
             setOpenSnackBar={setOpenSnackBar}
@@ -126,7 +154,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
 
   return {
     props: {
-      product: data,
+      productData: data,
     },
   };
 };

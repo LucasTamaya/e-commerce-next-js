@@ -4,6 +4,7 @@ export interface IProduct {
   images: string[];
   price: number;
   title: string;
+  quantity: number;
 }
 
 export interface IProductCard {
@@ -11,6 +12,11 @@ export interface IProductCard {
   image: string;
   price: number;
   title: string;
+}
+
+export interface IFirebaseCart {
+  productId: number;
+  quantity: number;
 }
 
 export interface ILoginFormValues {

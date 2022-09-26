@@ -15,16 +15,16 @@ export default async function handler(
   const { body, cookies } = req;
 
   if (!cookies.userId) {
-    return res
-      .status(200)
-      .json({ error: true, message: "Please sign-in first" });
+    return res.json({ error: true, message: "Please sign-in first" });
   }
 
   // if cookie available, add product in firebase
   const docRef = doc(db, "users", cookies.userId);
 
   try {
-    await updateDoc(docRef, { cart: arrayUnion(body.productId) });
+    await updateDoc(docRef, {
+      cart: arrayUnion({ productId: body.productId, quantity: body.quantity }),
+    });
     return res.status(200).json({
       error: false,
       message: "Product correctly added to cart",

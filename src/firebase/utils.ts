@@ -4,25 +4,31 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { BASE_URL } from "src/utils/urls";
 import Stripe from "stripe";
 import { db } from "./firebase-config";
-import { ILineItems } from "../interfaces/index";
+import { ILineItems, IFirebaseCart } from "../interfaces/index";
 
 export const createUserCart = async (userId: string) => {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, { cart: [] });
 };
 
-export const getUserCartProductIds = async (userId: string) => {
+export const getUserCartData = async (
+  userId: string
+): Promise<[] | IFirebaseCart[] | undefined> => {
   const docRef = doc(db, "users", userId);
 
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    const productIds: number[] = docSnap.data().cart;
+    // const productIds: number[] = docSnap
+    //   .data()
+    //   .cart.map((product: IFirebaseCart) => product.productId);
 
-    if (productIds.length === 0) {
-      return [];
-    }
-    return productIds;
+    const userCartData: IFirebaseCart[] = docSnap.data().cart;
+
+    // if (productIds.length === 0) {
+    // return [];
+    // }
+    return userCartData;
   }
 };
 
@@ -49,7 +55,7 @@ export const getStripeSession = async (lineItems: ILineItems[]) => {
       mode: "payment",
       line_items: lineItems,
       success_url: `${BASE_URL}/success`,
-      cancel_url: `${BASE_URL}/cancel`,
+      cancel_url: `${BASE_URL}`,
     });
 
     return session.url;

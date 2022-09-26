@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
-import { IProduct } from "@/interfaces/*";
+import { IFirebaseCart, IProduct, IProductCard } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
-import { getUserCartProductIds, getUserCartProducts } from "src/firebase/utils";
+import { getUserCartData, getUserCartProducts } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import { SnackBar } from "@/components/Common/SnackBar";
@@ -16,12 +16,16 @@ import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
   cookie: boolean;
-  products: IProduct[];
+  productsWithQuantity: IProduct[];
   totalAmount: number;
 }
 
-const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
-  const [cartProducts, setCartProducts] = useState(products);
+const Cart: NextPage<Props> = ({
+  cookie,
+  productsWithQuantity,
+  totalAmount,
+}) => {
+  const [cartProducts, setCartProducts] = useState(productsWithQuantity);
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
   const [deleteProductId, setDeleteProductId] = useState<number>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -139,11 +143,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
               ))}
             </ul>
             <Button filled={true} onClick={openCheckout}>
-              {!openCheckoutLoading ? (
-                <>Proceed to checkout</>
-              ) : (
-                <>Loading...</>
-              )}
+              {!openCheckoutLoading ? <>Checkout</> : <>Loading...</>}
             </Button>
           </>
         )}
@@ -185,8 +185,11 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const userId = req.headers.cookie.slice(7);
 
   try {
-    const productIds = await getUserCartProductIds(userId);
+    const data = await getUserCartData(userId);
 
+    const productIds = data?.map((product: IFirebaseCart) => product.productId);
+
+    // if no products in the cart
     if (!productIds || productIds?.length === 0) {
       return {
         props: {
@@ -198,15 +201,26 @@ export const getServerSideProps = async (context: NextPageContext) => {
 
     const products = await getUserCartProducts(productIds);
 
-    const totalAmount = getCartTotalAmount(products);
+    const quantities = data?.map((product: IFirebaseCart) => product.quantity);
 
-    return {
-      props: {
-        cookie: true,
-        products,
-        totalAmount,
-      },
-    };
+    if (quantities) {
+      const totalAmount = getCartTotalAmount(products, quantities);
+
+      const productsWithQuantity = products.map((product: IProduct, index) => {
+        return {
+          ...product,
+          quantity: quantities[index],
+        };
+      });
+
+      return {
+        props: {
+          cookie: true,
+          productsWithQuantity,
+          totalAmount,
+        },
+      };
+    }
   } catch (err: any) {
     console.log(err.message);
   }

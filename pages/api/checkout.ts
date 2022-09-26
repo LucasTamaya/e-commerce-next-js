@@ -20,7 +20,7 @@ export default async function handler(
         },
         unit_amount: product.price * 100, // convert dollars to cents ,
       },
-      quantity: 1,
+      quantity: product.quantity || 1,
     };
   });
 

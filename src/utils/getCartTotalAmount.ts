@@ -1,9 +1,15 @@
 import { IProduct } from "../interfaces/index";
 
-export const getCartTotalAmount = (products: IProduct[]) => {
+export const getCartTotalAmount = (
+  products: IProduct[],
+  quantities: number[]
+) => {
   const productPrices = products.map((product) => product.price);
 
-  const totalAmount = productPrices.reduce((prev, curr) => prev + curr);
+  // if quantitie available, we make the sum of all product prices and we mutliply by the quantity selected
+  const totalAmount = productPrices.reduce(
+    (prev, curr, index) => prev + curr * quantities[index]
+  );
 
   console.log(totalAmount);
 
