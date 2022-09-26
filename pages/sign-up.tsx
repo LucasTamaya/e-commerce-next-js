@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { MouseEvent } from "react";
 
 import {
@@ -13,7 +14,6 @@ import {
 } from "src/firebase/firebase-config";
 import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
-import Link from "next/link";
 
 const SignUp: NextPage = () => {
   // tous les outils nécessaires afin de gérer mon formulaire

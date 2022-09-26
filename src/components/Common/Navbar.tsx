@@ -1,10 +1,25 @@
 import Link from "next/link";
 import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
 
 const Navbar: React.FC = () => {
-  const [cookie] = useCookies(["userId"]);
+  const [userAuth, setUserAuth] = useState(false);
 
-  if (!cookie.userId) {
+  const [cookie, _, removeCookie] = useCookies(["userId"]);
+
+  const handleSignOut = () => {
+    removeCookie("userId", { path: "/" });
+  };
+
+  useEffect(() => {
+    if (cookie.userId === undefined) {
+      setUserAuth(false);
+    } else {
+      setUserAuth(true);
+    }
+  }, [cookie.userId, removeCookie]);
+
+  if (!userAuth) {
     return (
       <nav>
         <ul className="flex flex-row items-center gap-x-5">
@@ -34,8 +49,11 @@ const Navbar: React.FC = () => {
         <li className="text-white transition duration-150 hover:text-gray-500">
           <Link href="/products/others">Others</Link>
         </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
-          <p>Sign-out</p>
+        <li
+          className="text-white transition duration-150 cursor-pointer hover:text-gray-500"
+          onClick={handleSignOut}
+        >
+          Sign-out
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
           <Link href="/cart">Cart</Link>
