@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
-import { IFirebaseCart, IProduct, IProductCard } from "@/interfaces/*";
+import { IFirebaseCart, IProduct } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { getUserCartData, getUserCartProducts } from "src/firebase/utils";
