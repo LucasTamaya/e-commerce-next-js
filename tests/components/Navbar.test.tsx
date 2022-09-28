@@ -24,7 +24,7 @@ describe("Navbar Component", () => {
     render(<Navbar />);
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(7);
+    expect(screen.getAllByRole("listitem")).toHaveLength(6);
   });
 
   // it("should deletes the cookie if we click on Sign-out", async () => {

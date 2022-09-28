@@ -35,19 +35,16 @@ const Navbar: React.FC = () => {
     <nav>
       <ul className="flex flex-row items-center gap-x-5">
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/products/clothes">Clothes</Link>
+          <Link href="/">Best Foods</Link>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/products/shoes">Shoes</Link>
+          <Link href="/burgers">Burgers</Link>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/products/electronics">Electronics</Link>
+          <Link href="/pizzas">Pizzas</Link>
         </li>
         <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/products/furniture">Furniture</Link>
-        </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
-          <Link href="/products/others">Others</Link>
+          <Link href="/desserts">Desserts</Link>
         </li>
         <li
           className="text-white transition duration-150 cursor-pointer hover:text-gray-500"

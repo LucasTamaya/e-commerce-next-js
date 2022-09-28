@@ -23,7 +23,7 @@ export default async function handler(
 
   try {
     await updateDoc(docRef, {
-      cart: arrayRemove({ productId: body.productId }),
+      cart: arrayRemove({ id: body.productId }),
     });
     return res.json({
       error: false,

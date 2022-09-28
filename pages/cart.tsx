@@ -26,8 +26,6 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
   const [deleteProductId, setDeleteProductId] = useState<number>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  console.log(cartProducts);
-
   const router = useRouter();
 
   // query hook to delete product
@@ -85,6 +83,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     setDeleteProductId(cartProducts[idx].id);
   };
 
+  // if the user is not authenticated and try to open the cart page
   if (cookie === false) {
     return (
       <div className="w-full h-[70vh] flex justify-center items-center">
@@ -116,10 +115,12 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
       <div className="px-20 pb-10 mx-auto">
         <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
 
+        {/* if there are no products in the cart */}
         {cartProducts.length === 0 && (
           <p className="text-center text-lg">Your cart is empty :(</p>
         )}
 
+        {/* if there are some products saved in the cart */}
         {cartProducts.length > 0 && (
           <>
             <p className="font-bold mb-5">
@@ -147,6 +148,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
           </>
         )}
 
+        {/* Snackbar to show status message */}
         {deleteError ||
           (openCheckoutError && (
             <SnackBar
@@ -175,12 +177,14 @@ export default Cart;
 export const getServerSideProps = async (context: NextPageContext) => {
   const { req } = context;
 
+  // if there is no cookie
   if (!req?.headers.cookie) {
     return {
       props: { cookie: false },
     };
   }
 
+  // get the userId
   const userId = req.headers.cookie.slice(7);
 
   try {

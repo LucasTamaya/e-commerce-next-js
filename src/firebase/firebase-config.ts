@@ -8,7 +8,8 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { createUserCart } from "./utils";
+
+import { createUserCart, getDocSnap } from "./utils";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -33,9 +34,14 @@ export const signInWithProvider = async (
   try {
     const credentials = await signInWithPopup(auth, provider);
 
-    await createUserCart(credentials.user.uid);
+    const existingDocSnap = await getDocSnap(credentials.user.uid);
 
-    return credentials.user.uid;
+    if (!existingDocSnap) {
+      await createUserCart(credentials.user.uid);
+      return credentials.user.uid;
+    } else {
+      return credentials.user.uid;
+    }
   } catch (err: any) {
     console.log(err.message);
     throw Error(err.message);

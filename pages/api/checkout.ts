@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { IFood } from "@/interfaces/*";
 import { ILineItems } from "../../src/interfaces/index";
-import { getStripeSession } from "../../src/firebase/utils";
+import { getStripeSession } from "../../src/stripe/utils";
 
 export default async function handler(
   req: NextApiRequest,
