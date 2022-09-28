@@ -22,9 +22,11 @@ const Product: NextPage<Props> = ({ productData }) => {
   const [product, setProduct] = useState(productData);
   const [productQuantity, setProductQuantity] = useState(1);
 
+  console.log(productData);
+
   const router = useRouter();
 
-  const { id, name, price, dsc, img }: IFood = product;
+  const { id, name, price, dsc, img, category }: IFood = product;
 
   // query hook to add product to cart
   const {
@@ -33,7 +35,7 @@ const Product: NextPage<Props> = ({ productData }) => {
     isError,
     isSuccess: addToCartSuccess,
     data,
-  } = useAddProductToCart(id, name, img, price, productQuantity);
+  } = useAddProductToCart(id, name, img, price, category, productQuantity);
 
   // query hook to open the Stripe checkout
   const {
@@ -145,13 +147,23 @@ const Product: NextPage<Props> = ({ productData }) => {
 export default Product;
 
 export const getServerSideProps = async (context: NextPageContext) => {
-  const apiDetails = context?.req?.url;
+  const apiDetails = context.req?.url;
 
-  const { data } = await axios.get(`${FOOD_API_BASE_URL}${apiDetails}`);
+  // get the category of the product
+  const category = apiDetails?.match(/\/(.*?)\//i);
 
-  return {
-    props: {
-      productData: data,
-    },
-  };
+  if (category) {
+    const { data } = await axios.get(`${FOOD_API_BASE_URL}${apiDetails}`);
+
+    const productData: IFood = {
+      ...data,
+      category: category[0].replaceAll("/", ""),
+    };
+
+    return {
+      props: {
+        productData,
+      },
+    };
+  }
 };

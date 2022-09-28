@@ -4,10 +4,11 @@ import { useMutation } from "@tanstack/react-query";
 import { BASE_URL } from "src/utils/urls";
 
 const fetchAddProductToCart = async (
-  id: number,
+  id: string,
   name: string,
   img: string,
   price: number,
+  category: string,
   quantity: number
 ): Promise<any> => {
   const { data } = await axios.post(`${BASE_URL}/api/cart/add-product`, {
@@ -15,6 +16,7 @@ const fetchAddProductToCart = async (
     name,
     img,
     price,
+    category,
     quantity,
   });
 
@@ -22,13 +24,14 @@ const fetchAddProductToCart = async (
 };
 
 export const useAddProductToCart = (
-  id: number,
+  id: string,
   name: string,
   img: string,
   price: number,
+  category: string,
   quantity: number
 ) => {
   return useMutation(() =>
-    fetchAddProductToCart(id, name, img, price, quantity)
+    fetchAddProductToCart(id, name, img, price, category, quantity)
   );
 };

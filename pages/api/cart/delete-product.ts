@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { arrayRemove, doc, updateDoc } from "firebase/firestore";
+
 import { db } from "src/firebase/firebase-config";
 
 interface IData {
@@ -21,9 +22,13 @@ export default async function handler(
   // if cookie available, delete product from firebase
   const docRef = doc(db, "users", cookies.userId);
 
+  const { productToDelete } = body;
+
+  console.log(productToDelete);
+
   try {
     await updateDoc(docRef, {
-      cart: arrayRemove({ id: body.productId }),
+      cart: arrayRemove(productToDelete),
     });
     return res.json({
       error: false,

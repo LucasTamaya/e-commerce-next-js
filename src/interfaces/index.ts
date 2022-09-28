@@ -1,22 +1,23 @@
 export interface IFood {
-  id: number;
+  id: string;
   img: string;
   name: string;
   dsc: string;
   price: number;
   quantity: number;
+  category: string;
 }
 
 export interface IProductCard {
-  id: number;
+  id: string;
   img: string;
-  price: number;
   name: string;
+  price: number;
   category: string;
 }
 
 export interface IFirebaseCart {
-  productId: number;
+  productId: string;
   quantity: number;
 }
 

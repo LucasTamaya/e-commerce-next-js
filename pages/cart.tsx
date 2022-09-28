@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
-import { IProductCard } from "@/interfaces/*";
+import { IFood } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { getUserCartData } from "src/firebase/utils";
@@ -16,14 +16,14 @@ import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
   cookie?: boolean;
-  products: IProductCard[];
+  products: IFood[];
   totalAmount: number;
 }
 
 const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
   const [cartProducts, setCartProducts] = useState(products);
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
-  const [deleteProductId, setDeleteProductId] = useState<number>();
+  const [productToDelete, setProductToDelete] = useState<IFood>();
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const router = useRouter();
@@ -33,7 +33,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     mutate: deleteProduct,
     isError: deleteError,
     isSuccess: deleteSuccess,
-  } = useDeleteProductFromCart(deleteProductId);
+  } = useDeleteProductFromCart(productToDelete);
 
   // query hook to open the Stripe checkout
   const {
@@ -44,14 +44,14 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     isSuccess: openCheckoutSuccess,
   } = useCheckout(cartProducts);
 
-  // handle when we delete a product
+  // delete product in firebase backend
   useEffect(() => {
     // run the code only if a deleteProductId is available
-    if (deleteProductId) {
+    if (productToDelete) {
       deleteProduct();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deleteProductId]);
+  }, [productToDelete]);
 
   // handle the checkout
   useEffect(() => {
@@ -73,14 +73,23 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     }
   }, [deleteError, deleteSuccess, openCheckoutError, openCheckoutSuccess]);
 
-  const handleDelete = async (idx: number) => {
-    // filter the array with the index of the deleted product
+  const handleDelete = async (id: string) => {
+    cartProducts.forEach((product) => {
+      if (product.id === id) {
+        // update the cart amount
+        setCartTotalAmount((prev) => prev - product.price * product.quantity);
+        // get the product to delete
+        setProductToDelete(product);
+      }
+    });
+
+    // filter the array by deleting the product with correspondent id
     const updatedCartProducts = cartProducts.filter(
-      (_, index) => index !== idx
+      (product) => product.id !== id
     );
+
+    // update the cart products on the frontend
     setCartProducts(updatedCartProducts);
-    setCartTotalAmount((prev) => prev - cartProducts[idx].price);
-    setDeleteProductId(cartProducts[idx].id);
   };
 
   // if the user is not authenticated and try to open the cart page
@@ -127,7 +136,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
               Total amount: ${cartTotalAmount.toFixed(2)}
             </p>
             <ul className="grid grid-cols-3 gap-7 mx-auto mb-5">
-              {cartProducts.map(({ id, name, img, price, category }, idx) => (
+              {cartProducts.map(({ id, name, img, price, category }) => (
                 <li key={id}>
                   <ProductCard
                     id={id}
@@ -136,7 +145,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
                     price={price}
                     category={category}
                   />
-                  <Button filled={true} onClick={() => handleDelete(idx)}>
+                  <Button filled={true} onClick={() => handleDelete(id)}>
                     Delete from cart
                   </Button>
                 </li>
@@ -188,7 +197,9 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const userId = req.headers.cookie.slice(7);
 
   try {
-    const products = await getUserCartData(userId);
+    const products: IFood[] = await getUserCartData(userId);
+
+    console.log(products);
 
     if (products?.length === 0) {
       return {
