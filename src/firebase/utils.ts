@@ -4,37 +4,23 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { BASE_URL } from "src/utils/urls";
 import Stripe from "stripe";
 import { db } from "./firebase-config";
-import { ILineItems, IFirebaseCart } from "../interfaces/index";
+import { ILineItems, IFood } from "../interfaces/index";
 
 export const createUserCart = async (userId: string) => {
   const userRef = doc(db, "users", userId);
   setDoc(userRef, { cart: [] });
 };
 
-export const getUserCartData = async (
-  userId: string
-): Promise<[] | IFirebaseCart[] | undefined> => {
+export const getUserCartData = async (userId: string): Promise<any> => {
   const docRef = doc(db, "users", userId);
 
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    const userCartData: IFirebaseCart[] = docSnap.data().cart;
-    console.log(userCartData);
+    const userCartData: IFood[] = docSnap.data().cart;
 
     return userCartData;
   }
-};
-
-export const getUserCartProducts = async (productIds: number[]) => {
-  const products = await Promise.all(
-    productIds.map(async (id) => {
-      const { data } = await axios.get(`${FOOD_API_BASE_URL}/products/${id}`);
-      return data;
-    })
-  );
-
-  return products;
 };
 
 export const getStripeSession = async (lineItems: ILineItems[]) => {

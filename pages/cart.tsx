@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
-import { IFirebaseCart, IProductCard } from "@/interfaces/*";
+import { IProductCard } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
-import { getUserCartData, getUserCartProducts } from "src/firebase/utils";
+import { getUserCartData } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import { SnackBar } from "@/components/Common/SnackBar";
@@ -15,7 +15,7 @@ import { useCheckout } from "src/hooks/useCheckout";
 import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
-  cookie: boolean;
+  cookie?: boolean;
   products: IProductCard[];
   totalAmount: number;
 }
@@ -85,7 +85,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     setDeleteProductId(cartProducts[idx].id);
   };
 
-  if (!cookie) {
+  if (cookie === false) {
     return (
       <div className="w-full h-[70vh] flex justify-center items-center">
         <Link href="/sign-in">
@@ -184,46 +184,24 @@ export const getServerSideProps = async (context: NextPageContext) => {
   const userId = req.headers.cookie.slice(7);
 
   try {
-    const data = await getUserCartData(userId);
+    const products = await getUserCartData(userId);
 
-    const productIds = data?.map((product: IFirebaseCart) => product.productId);
-
-    // if no products in the cart
-    if (!productIds || productIds?.length === 0) {
+    if (products?.length === 0) {
       return {
         props: {
-          cookie: true,
-          products: [],
-        },
-      };
-    }
-
-    const cartProducts = await getUserCartProducts(productIds);
-
-    console.log(cartProducts);
-
-    const quantities = data?.map((product: IFirebaseCart) => product.quantity);
-
-    if (quantities) {
-      console.log("herreee");
-
-      const totalAmount = getCartTotalAmount(cartProducts, quantities);
-
-      const products = cartProducts.map((product: IProductCard, index) => {
-        return {
-          ...product,
-          quantity: quantities[index],
-        };
-      });
-
-      return {
-        props: {
-          cookie: true,
           products,
-          totalAmount,
         },
       };
     }
+
+    const totalAmount = getCartTotalAmount(products);
+
+    return {
+      props: {
+        products,
+        totalAmount,
+      },
+    };
   } catch (err: any) {
     console.log(err.message);
   }
