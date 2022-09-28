@@ -15,7 +15,7 @@ const ProductList: React.FC<Props> = ({ category, title }) => {
       <Header />
       <h2
         role={"heading"}
-        className="text-center text-3xl font-bold mb-12 mt-10"
+        className="text-center text-3xl text-main-red font-bold mb-12 mt-10"
       >
         {title}
       </h2>

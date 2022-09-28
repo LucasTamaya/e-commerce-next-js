@@ -11,21 +11,23 @@ const ProductCard: React.FC<IProductCard> = ({
   category,
 }) => {
   return (
-    <div className="relative">
-      <p className="absolute top-5 left-5 font-bold">${price}</p>
+    <>
       <div className="flex justify-center items-center">
-        <Image src={img} width={220} height={250} alt="product image" />
+        <Image src={img} width={350} height={300} alt="product image" />
       </div>
-      <p className="text-left text-sm my-5 text-ellipsis overflow-hidden whitespace-nowrap">
-        {name}
-      </p>
+      <div className="flex flex-row items-center justify-between">
+        <p className="font-bold my-5 text-ellipsis overflow-hidden whitespace-nowrap">
+          {name}
+        </p>
+        <p className="font-bold text-main-red">${price}</p>
+      </div>
 
       <Link href={`/${category}/${id}`} role={"link"}>
-        <a className="w-full block text-center text-black border-2 border-black uppercase font-bold py-2 transition duration-200 mb-3 hover:text-white hover:bg-black ">
+        <a className="w-full block text-center text-main-red border-2 border-main-red rounded uppercase font-bold py-2 transition duration-200 mb-3 hover:text-white hover:bg-main-red ">
           See more
         </a>
       </Link>
-    </div>
+    </>
   );
 };
 

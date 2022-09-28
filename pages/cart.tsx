@@ -131,9 +131,12 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
 
         {/* if there are some products saved in the cart */}
         {cartProducts.length > 0 && (
-          <>
-            <p className="font-bold mb-5">
-              Total amount: ${cartTotalAmount.toFixed(2)}
+          <div className="max-w-[1300px] px-20 mx-auto">
+            <p className="font-bold text-xl mb-5">
+              Total amount:{" "}
+              <span className="text-main-red">
+                ${cartTotalAmount.toFixed(2)}
+              </span>
             </p>
             <ul className="grid grid-cols-3 gap-7 mx-auto mb-5">
               {cartProducts.map(({ id, name, img, price, category }) => (
@@ -154,7 +157,7 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
             <Button filled={true} onClick={openCheckout}>
               {!openCheckoutLoading ? <>Checkout</> : <>Loading...</>}
             </Button>
-          </>
+          </div>
         )}
 
         {/* Snackbar to show status message */}

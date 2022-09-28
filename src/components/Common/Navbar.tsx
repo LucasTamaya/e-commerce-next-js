@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     return (
       <nav>
         <ul className="flex flex-row items-center gap-x-5">
-          <li className="text-white transition duration-150 hover:text-gray-500">
+          <li className="text-white transition duration-150 hover:scale-110">
             <Link href="/sign-in">Sign-in</Link>
           </li>
         </ul>
@@ -34,25 +34,25 @@ const Navbar: React.FC = () => {
   return (
     <nav>
       <ul className="flex flex-row items-center gap-x-5">
-        <li className="text-white transition duration-150 hover:text-gray-500">
+        <li className="text-white font-bold transition duration-150 hover:scale-110">
           <Link href="/">Best Foods</Link>
         </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
+        <li className="text-white font-bold transition duration-150 hover:scale-110">
           <Link href="/burgers">Burgers</Link>
         </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
+        <li className="text-white font-bold transition duration-150 hover:scale-110">
           <Link href="/pizzas">Pizzas</Link>
         </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
+        <li className="text-white font-bold transition duration-150 hover:scale-110">
           <Link href="/desserts">Desserts</Link>
         </li>
         <li
-          className="text-white transition duration-150 cursor-pointer hover:text-gray-500"
+          className="text-white font-bold transition duration-150 cursor-pointer hover:scale-110"
           onClick={handleSignOut}
         >
           Sign-out
         </li>
-        <li className="text-white transition duration-150 hover:text-gray-500">
+        <li className="text-white font-bold transition duration-150 hover:scale-110">
           <Link href="/cart">Cart</Link>
         </li>
       </ul>

@@ -10,8 +10,10 @@ const Button: React.FC<Props> = ({ children, filled, onClick }) => {
   return (
     <button
       className={`${
-        filled ? "bg-black text-white" : "text-black border-2 border-black"
-      } text-center uppercase py-2 w-full`}
+        filled
+          ? "bg-main-red text-white"
+          : "text-main-red border-2 border-main-red"
+      } text-center uppercase rounded py-2 w-full`}
       onClick={onClick}
     >
       {children}

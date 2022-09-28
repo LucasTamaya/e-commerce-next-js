@@ -89,10 +89,10 @@ const Product: NextPage<Props> = ({ productData }) => {
       <Header />
       <div className="relative w-full h-[80vh] flex flex-row justify-center items-center">
         <div className="max-w-[1000px] flex items-center gap-x-10 mx-auto">
-          <Image src={img} alt="product image" width={250} height={250} />
+          <Image src={img} alt="product image" width={350} height={300} />
           <div className="flex-auto flex flex-col max-w-[700px] gap-y-3">
             <h3 className="font-bold text-xl">{name}</h3>
-            <p>${price}</p>
+            <p className="font-bold text-main-red">${price}</p>
             <p>{dsc}</p>
             <label htmlFor="quantity" className="font-bold">
               Select a quantity:
@@ -105,7 +105,7 @@ const Product: NextPage<Props> = ({ productData }) => {
               onChange={(e) => setProductQuantity(e.target.valueAsNumber)}
             />
             <Button filled={true} onClick={openCheckout}>
-              {!openCheckoutLoading ? <>Buy now</> : <>Loading</>}
+              {!openCheckoutLoading ? <>Order now</> : <>Loading</>}
             </Button>
             <Button filled={false} onClick={mutate}>
               {!isLoading ? <>Add to cart</> : <>Loading...</>}
