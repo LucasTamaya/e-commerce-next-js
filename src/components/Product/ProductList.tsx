@@ -1,15 +1,14 @@
-import { useProductsByCategory } from "src/hooks/useProductsByCategory";
+import { useFoods } from "src/hooks/useFoods";
 import Header from "../Common/Header";
 import ProductCard from "./ProductCard";
 
 interface Props {
-  fetchDetails: string;
+  category: string;
   title: string;
 }
 
-const ProductList: React.FC<Props> = ({ fetchDetails, title }) => {
-  const { isLoading, isError, isSuccess, data } =
-    useProductsByCategory(fetchDetails);
+const ProductList: React.FC<Props> = ({ category, title }) => {
+  const { isLoading, isError, isSuccess, data } = useFoods(category);
 
   return (
     <section>
@@ -26,13 +25,14 @@ const ProductList: React.FC<Props> = ({ fetchDetails, title }) => {
 
       {isSuccess && (
         <ul className="max-w-[1300px] grid grid-cols-1 gap-7 mx-auto px-20 lg:grid-cols-2 xl:grid-cols-3">
-          {data.map(({ id, title, images, price }) => (
+          {data.map(({ id, name, img, price }) => (
             <li key={id}>
               <ProductCard
                 id={id}
-                title={title}
-                image={images[0]}
+                name={name}
+                img={img}
                 price={price}
+                category={category}
               />
             </li>
           ))}

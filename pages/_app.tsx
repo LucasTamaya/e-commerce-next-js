@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
-        <title>Next-Ecommerce</title>
+        <title>NextFoodApp</title>
         <meta
           name="description"
           content="An e-commerce web app using some fresh technologies such as Next JS Tailwind and much more !"

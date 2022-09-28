@@ -1,4 +1,4 @@
-import { PLATZI_API_BASE_URL } from "./../utils/urls";
+import { FOOD_API_BASE_URL } from "./../utils/urls";
 import axios from "axios";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { BASE_URL } from "src/utils/urls";
@@ -29,7 +29,7 @@ export const getUserCartData = async (
 export const getUserCartProducts = async (productIds: number[]) => {
   const products = await Promise.all(
     productIds.map(async (id) => {
-      const { data } = await axios.get(`${PLATZI_API_BASE_URL}/products/${id}`);
+      const { data } = await axios.get(`${FOOD_API_BASE_URL}/products/${id}`);
       return data;
     })
   );

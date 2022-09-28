@@ -1,17 +1,18 @@
-export interface IProduct {
-  description: string;
+export interface IFood {
   id: number;
-  images: string[];
+  img: string;
+  name: string;
+  dsc: string;
   price: number;
-  title: string;
   quantity: number;
 }
 
 export interface IProductCard {
   id: number;
-  image: string;
+  img: string;
   price: number;
-  title: string;
+  name: string;
+  category: string;
 }
 
 export interface IFirebaseCart {

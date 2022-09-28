@@ -1,11 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  arrayRemove,
-  doc,
-  updateDoc,
-  where,
-  deleteField,
-} from "firebase/firestore";
+import { arrayRemove, doc, updateDoc } from "firebase/firestore";
 import { db } from "src/firebase/firebase-config";
 
 interface IData {

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+
 import { db } from "src/firebase/firebase-config";
 
 interface IData {
@@ -21,9 +22,11 @@ export default async function handler(
   // if cookie available, add product in firebase
   const docRef = doc(db, "users", cookies.userId);
 
+  const { id, name, img, price, quantity } = body;
+
   try {
     await updateDoc(docRef, {
-      cart: arrayUnion({ productId: body.productId, quantity: body.quantity }),
+      cart: arrayUnion({ id, name, img, price, quantity }),
     });
     return res.status(200).json({
       error: false,

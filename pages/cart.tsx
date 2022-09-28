@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import ProductCard from "@/components/Product/ProductCard";
-import { IFirebaseCart, IProduct } from "@/interfaces/*";
+import { IFirebaseCart, IProductCard } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { getUserCartData, getUserCartProducts } from "src/firebase/utils";
@@ -16,7 +16,7 @@ import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
   cookie: boolean;
-  products: IProduct[];
+  products: IProductCard[];
   totalAmount: number;
 }
 
@@ -126,13 +126,14 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
               Total amount: ${cartTotalAmount.toFixed(2)}
             </p>
             <ul className="grid grid-cols-3 gap-7 mx-auto mb-5">
-              {cartProducts.map(({ id, title, images, price }, idx) => (
+              {cartProducts.map(({ id, name, img, price, category }, idx) => (
                 <li key={id}>
                   <ProductCard
                     id={id}
-                    title={title}
-                    image={images[0]}
+                    name={name}
+                    img={img}
                     price={price}
+                    category={category}
                   />
                   <Button filled={true} onClick={() => handleDelete(idx)}>
                     Delete from cart
@@ -199,12 +200,16 @@ export const getServerSideProps = async (context: NextPageContext) => {
 
     const cartProducts = await getUserCartProducts(productIds);
 
+    console.log(cartProducts);
+
     const quantities = data?.map((product: IFirebaseCart) => product.quantity);
 
     if (quantities) {
+      console.log("herreee");
+
       const totalAmount = getCartTotalAmount(cartProducts, quantities);
 
-      const products = cartProducts.map((product: IProduct, index) => {
+      const products = cartProducts.map((product: IProductCard, index) => {
         return {
           ...product,
           quantity: quantities[index],

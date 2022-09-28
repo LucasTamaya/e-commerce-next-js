@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { act } from "react-dom/test-utils";
 
-import Product from "@/pages/product/[id]";
+import Product from "@/pages/best-foods/[id]";
 import { renderWithClient } from "@/config/utils";
 import { server } from "@/config/server";
 import { mockProductData } from "tests/mockData/productData";

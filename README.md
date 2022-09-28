@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Project Description
 
-This project is a small e-commerce site that allowed me to discover the Stripe api. We can authenticate ourselves, add products to our cart and make a purchase.
+This project is a food app that allowed me to discover the Stripe api. We can authenticate ourselves, add foods to our cart and make a purchase.
 
 ## Technologies used
 

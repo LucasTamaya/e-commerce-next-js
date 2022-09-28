@@ -2,20 +2,19 @@ import axios from "axios";
 import type { NextPage, NextPageContext } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-import { IProduct } from "@/interfaces/index";
+import { IFood } from "@/interfaces/index";
 import Button from "@/components/Common/Button";
 import Header from "@/components/Common/Header";
 import { useAddProductToCart } from "src/hooks/useAddProductToCart";
 import { SnackBar } from "@/components/Common/SnackBar";
-import { PLATZI_API_BASE_URL } from "src/utils/urls";
-import { useRouter } from "next/router";
-
-import { useCheckout } from "../../src/hooks/useCheckout";
+import { FOOD_API_BASE_URL } from "src/utils/urls";
+import { useCheckout } from "src/hooks/useCheckout";
 import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
-  productData: IProduct;
+  productData: IFood;
 }
 
 const Product: NextPage<Props> = ({ productData }) => {
@@ -25,7 +24,7 @@ const Product: NextPage<Props> = ({ productData }) => {
 
   const router = useRouter();
 
-  const { id, title, price, description, images }: IProduct = product;
+  const { id, name, price, dsc, img }: IFood = product;
 
   // query hook to add product to cart
   const {
@@ -34,7 +33,7 @@ const Product: NextPage<Props> = ({ productData }) => {
     isError,
     isSuccess: addToCartSuccess,
     data,
-  } = useAddProductToCart(id, productQuantity);
+  } = useAddProductToCart(id, name, img, price, productQuantity);
 
   // query hook to open the Stripe checkout
   const {
@@ -88,11 +87,11 @@ const Product: NextPage<Props> = ({ productData }) => {
       <Header />
       <div className="relative w-full h-[80vh] flex flex-row justify-center items-center">
         <div className="max-w-[1000px] flex items-center gap-x-10 mx-auto">
-          <Image src={images[0]} alt="product image" width={250} height={250} />
+          <Image src={img} alt="product image" width={250} height={250} />
           <div className="flex-auto flex flex-col max-w-[700px] gap-y-3">
-            <h3 className="font-bold text-xl">{title}</h3>
+            <h3 className="font-bold text-xl">{name}</h3>
             <p>${price}</p>
-            <p>{description}</p>
+            <p>{dsc}</p>
             <label htmlFor="quantity" className="font-bold">
               Select a quantity:
             </label>
@@ -146,11 +145,9 @@ const Product: NextPage<Props> = ({ productData }) => {
 export default Product;
 
 export const getServerSideProps = async (context: NextPageContext) => {
-  const { query } = context;
+  const apiDetails = context?.req?.url;
 
-  const { data } = await axios.get(
-    `${PLATZI_API_BASE_URL}/products/${query.id}`
-  );
+  const { data } = await axios.get(`${FOOD_API_BASE_URL}${apiDetails}`);
 
   return {
     props: {

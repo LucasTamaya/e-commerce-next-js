@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { IProduct } from "@/interfaces/*";
+import { IFood } from "@/interfaces/*";
 import { ILineItems } from "../../src/interfaces/index";
 import { getStripeSession } from "../../src/firebase/utils";
 
@@ -11,12 +11,12 @@ export default async function handler(
   const { products } = req.body;
 
   // format the data according to stripe
-  const lineItems: ILineItems[] = products.map((product: IProduct) => {
+  const lineItems: ILineItems[] = products.map((product: IFood) => {
     return {
       price_data: {
         currency: "usd",
         product_data: {
-          name: product.title,
+          name: product.name,
         },
         unit_amount: product.price * 100, // convert dollars to cents ,
       },
