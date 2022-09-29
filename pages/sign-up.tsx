@@ -5,7 +5,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
+import { PulseLoader } from "react-spinners";
+import SnackBar from "@/components/Common/SnackBar";
 
 import {
   googleProvider,
@@ -16,7 +18,10 @@ import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
 
 const SignUp: NextPage = () => {
-  // tous les outils nécessaires afin de gérer mon formulaire
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+
   const { control, handleSubmit } = useForm<ILoginFormValues>({
     resolver: yupResolver(loginValidationSchema),
   });
@@ -25,7 +30,13 @@ const SignUp: NextPage = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    setOpenSnackBar(true);
+  }, [error]);
+
   const handleSignUpWithEmailAndPassword = async (input: ILoginFormValues) => {
+    setLoading(true);
+    setError("");
     try {
       const { email, password } = input;
 
@@ -39,9 +50,15 @@ const SignUp: NextPage = () => {
         sameSite: true, // change to false if bug on production
       });
 
+      setLoading(false);
       router.push("/");
     } catch (err: any) {
-      console.log(err.message);
+      setLoading(false);
+      if (err.message.indexOf("auth") === -1) {
+        setError("Something went wrong during the request");
+      } else {
+        setError("User already exists");
+      }
     }
   };
   const handleSignInWithProvider = async (e: MouseEvent) => {
@@ -62,9 +79,11 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-row justify-center items-center">
+    <div className="w-full h-screen flex flex-col justify-center items-center gap-y-12">
+      <h1 className="text-main-red font-bold text-4xl">NextFoodApp</h1>
+
       <form
-        className="border-2 border-black flex flex-col gap-y-2 p-5"
+        className="border-2 border-gray-500 flex flex-col gap-y-5 p-10"
         onSubmit={handleSubmit(handleSignUpWithEmailAndPassword)}
       >
         <Controller
@@ -75,7 +94,7 @@ const SignUp: NextPage = () => {
               <input
                 value={value || ""}
                 type="email"
-                className="border-2 border-black px-4 py-2 rounded"
+                className="border-2 border-gray-500 px-4 py-2 rounded"
                 placeholder="Email"
                 onChange={onChange}
               />
@@ -94,7 +113,7 @@ const SignUp: NextPage = () => {
               <input
                 value={value || ""}
                 type="password"
-                className="border-2 border-black px-4 py-2 rounded"
+                className="border-2 border-gray-500 px-4 py-2 rounded"
                 placeholder="Password"
                 onChange={onChange}
               />
@@ -105,24 +124,33 @@ const SignUp: NextPage = () => {
           )}
         />
 
-        <button className="bg-black w-full text-white text-center p-3 rounded-lg">
-          Sign-Up
+        <button className="bg-main-red w-full h-12 text-white flex flex-row items-center justify-center rounded-lg">
+          {!loading ? <>Sign-up</> : <PulseLoader color="#fff" size={7} />}
         </button>
 
         <button
           onClick={handleSignInWithProvider}
-          className="bg-blue-500 w-full text-white p-3 rounded-lg flex flex-row items-center gap-x-2"
+          className="border-2 border-main-red w-full text-main-red font-bold p-3 rounded-lg flex flex-row items-center gap-x-2"
         >
-          <GoogleIcon sx={{ fontWeight: 25, color: "#fff" }} />
+          <GoogleIcon sx={{ fontWeight: 25, color: "#e63b60" }} />
           Continue with Google
         </button>
         <p className="text-xs">
           Already have an account ?{" "}
-          <span className="text-blue-500">
+          <span className="text-main-red">
             <Link href="/sign-in">Sign-In</Link>
           </span>
         </p>
       </form>
+
+      {error && (
+        <SnackBar
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+          severity="error"
+          message={error}
+        />
+      )}
     </div>
   );
 };
