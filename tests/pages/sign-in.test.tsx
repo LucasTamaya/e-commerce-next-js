@@ -10,7 +10,7 @@ jest.mock("../../src/firebase/firebase-config.ts", () => {
   });
 });
 
-describe("SignIn Page", () => {
+describe("Sign in Page", () => {
   it("should renders the page", () => {
     render(<SignIn />);
 
@@ -24,7 +24,7 @@ describe("SignIn Page", () => {
 
     const emailInput = screen.getByPlaceholderText("Email");
     const passwordInput = screen.getByPlaceholderText("Password");
-    const submitBtn = screen.getByText("Sign-In");
+    const submitBtn = screen.getByText("Sign-in");
 
     fireEvent.change(emailInput, {
       target: { value: "N0t_aCorrect@email.45" },
@@ -41,7 +41,7 @@ describe("SignIn Page", () => {
   it("should shows error messages if we submit the form with empty fields", async () => {
     render(<SignIn />);
 
-    const submitBtn = screen.getByText("Sign-In");
+    const submitBtn = screen.getByText("Sign-in");
 
     fireEvent.click(submitBtn);
 

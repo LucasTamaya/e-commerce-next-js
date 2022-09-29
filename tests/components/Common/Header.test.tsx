@@ -1,30 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import Navbar from "@/components/Common/Navbar";
+import Header from "@/components/Common/Header";
 
-describe("Navbar Component", () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
-  it("should renders a single navigation element if the user is not sign-in and there is no cookie available", () => {
-    render(<Navbar />);
+describe("Header Component", () => {
+  it("should renders a single navigation link if the user is not sign-in", () => {
+    render(<Header />);
 
-    expect(screen.getByRole("navigation")).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Sign-in" })).toBeInTheDocument();
   });
 
-  it("should renders a 7 navigation elements if the user is sign-in and if there is cookie available", () => {
+  it("should renders 4 navigation links if the user is sign-in", () => {
     // mock a random cookie
     Object.defineProperty(window.document, "cookie", {
       writable: true,
       value: "userId=ogkpae67aeAFE6876FZga",
     });
 
-    render(<Navbar />);
+    render(<Header />);
 
-    expect(screen.getByRole("navigation")).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(6);
+    expect(screen.getAllByRole("link")).toHaveLength(4);
   });
 
   // it("should deletes the cookie if we click on Sign-out", async () => {

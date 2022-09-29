@@ -10,7 +10,7 @@ jest.mock("../../src/firebase/firebase-config.ts", () => {
   });
 });
 
-describe("SignIn Page", () => {
+describe("Sign-up Page", () => {
   it("should renders the page", () => {
     render(<SignUp />);
 
@@ -24,7 +24,7 @@ describe("SignIn Page", () => {
 
     const emailInput = screen.getByPlaceholderText("Email");
     const passwordInput = screen.getByPlaceholderText("Password");
-    const submitBtn = screen.getByText("Sign-Up");
+    const submitBtn = screen.getByText("Sign-up");
 
     fireEvent.change(emailInput, {
       target: { value: "N0t_aCorrect@email.45" },
@@ -41,7 +41,7 @@ describe("SignIn Page", () => {
   it("should shows error messages if we submit the form with empty fields", async () => {
     render(<SignUp />);
 
-    const submitBtn = screen.getByText("Sign-Up");
+    const submitBtn = screen.getByText("Sign-up");
 
     fireEvent.click(submitBtn);
 
@@ -49,4 +49,8 @@ describe("SignIn Page", () => {
       2
     );
   });
+
+  // it("should renders an error message if the user already exists", () => {})
+  // it("should renders an error message if there is an error during the fetch request", () => {})
+  // it("should redirects the user to the index page if the authentication is successfull", () => {})
 });

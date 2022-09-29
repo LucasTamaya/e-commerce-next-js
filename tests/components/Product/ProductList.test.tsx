@@ -7,20 +7,20 @@ import { renderWithClient } from "@/config/utils";
 describe("ProductList Component", () => {
   it("should renders the component", () => {
     const { getByText } = renderWithClient(
-      <ProductList fetchDetails="products" title="Men's Products" />
+      <ProductList category="burgers" title="Burgers" />
     );
 
-    expect(getByText(/Men's Products/i)).toBeInTheDocument();
+    expect(getByText(/Burgers/i)).toBeInTheDocument();
   });
 
   it("should renders some ProductCards when the fetch request is done", async () => {
     const { findAllByText, findAllByRole } = renderWithClient(
-      <ProductList fetchDetails="products" title="Men's Products" />
+      <ProductList category="burgers" title="Burgers" />
     );
 
-    expect(await findAllByText("Product")).toHaveLength(4);
-    expect(await findAllByText("$10")).toHaveLength(4);
-    expect(await findAllByRole("img")).toHaveLength(4);
+    expect(await findAllByText("Burger")).toHaveLength(3);
+    expect(await findAllByText("$10")).toHaveLength(3);
+    expect(await findAllByRole("img")).toHaveLength(3);
   });
 
   it("should renders an error message if the fetch request fails", async () => {
@@ -31,7 +31,7 @@ describe("ProductList Component", () => {
     );
 
     const { findByText } = renderWithClient(
-      <ProductList fetchDetails="products" title="Men's Products" />
+      <ProductList category="burgers" title="Burgers" />
     );
 
     expect(

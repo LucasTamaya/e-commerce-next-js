@@ -3,11 +3,11 @@ import { rest } from "msw";
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { menProducts } from "tests/mockData/menProducts";
+import { burgers } from "tests/mockData/burgers";
 
 export const handlers = [
-  rest.get("*/products*", (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(menProducts));
+  rest.get("*/burgers*", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(burgers));
   }),
   rest.post("*/cart/add*", (_, res, ctx) => {
     return res(

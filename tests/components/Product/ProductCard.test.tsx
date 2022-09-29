@@ -12,31 +12,34 @@ describe("ProductCard Component", () => {
   it("should renders the component with a product", () => {
     render(
       <ProductCard
-        id={1}
-        title="A super tee-shirt"
-        image="https://tee-shirt.jpg"
-        price={10.8}
+        id="the-original-burger"
+        name="A delicious burger"
+        img="https://burgers.jpg"
+        price={15}
+        category="burgers"
       />
     );
 
     expect(screen.getByRole("img")).toBeInTheDocument();
-    expect(screen.getByText(/A super tee-shirt/i)).toBeInTheDocument();
-    expect(screen.getByText("$10.8")).toBeInTheDocument();
+    expect(screen.getByText(/A delicious burger/i)).toBeInTheDocument();
+    expect(screen.getByText("$15")).toBeInTheDocument();
     expect(screen.getByRole("link")).toBeInTheDocument();
   });
 
   it("should renders a link button to see the product's details", () => {
     render(
       <ProductCard
-        id={1}
-        title="A super tee-shirt"
-        image="https://tee-shirt.jpg"
-        price={10.8}
+        id="the-original-burger"
+        name="A delicious burger"
+        img="https://burgers.jpg"
+        price={15}
+        category="burgers"
       />
     );
 
-    expect(screen.getByRole("link")).toHaveAttribute("href", "/product/1");
+    expect(screen.getByRole("link")).toHaveAttribute(
+      "href",
+      "/burgers/the-original-burger"
+    );
   });
 });
-
-// should be able to add the product to the cart

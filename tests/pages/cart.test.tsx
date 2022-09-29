@@ -4,7 +4,7 @@ import React from "react";
 
 import Cart from "@/pages/cart";
 import { renderWithClient } from "@/config/utils";
-import { mockCartProducts } from "tests/mockData/cartProducts";
+import { burgers } from "tests/mockData/burgers";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import { createMockRouter } from "tests/utils/createMockRouter";
 
@@ -24,48 +24,36 @@ describe("Cart Component", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it("should renders the component if a cookie is available", () => {
-    renderWithClient(<Cart cookie={true} products={[]} totalAmount={0} />);
+  it("should renders the component correctly", () => {
+    renderWithClient(<Cart products={[]} totalAmount={0} />);
 
     expect(screen.getByText("My Cart")).toBeInTheDocument();
   });
 
-  it("should renders the component if there is no cookie", () => {
-    renderWithClient(<Cart cookie={false} products={[]} totalAmount={0} />);
-
-    expect(screen.getByText("Please sign-in first")).toBeInTheDocument();
-  });
-
   it("should renders a checkout button if there are some products", () => {
-    renderWithClient(
-      <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
-    );
+    renderWithClient(<Cart products={burgers} totalAmount={75.28} />);
 
     expect(screen.getByText("Checkout")).toBeInTheDocument();
   });
 
   it("should renders some products if the user has added any", () => {
-    renderWithClient(
-      <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
-    );
+    renderWithClient(<Cart products={burgers} totalAmount={30} />);
 
     expect(screen.getAllByRole("img")).toHaveLength(3);
     expect(screen.getAllByText("See more")).toHaveLength(3);
     expect(screen.getAllByText("Delete from cart")).toHaveLength(3);
-    expect(screen.getByText("Total amount: $75.28")).toBeInTheDocument();
+    expect(screen.getByText("Total amount:")).toBeInTheDocument();
+    expect(screen.getByText("$30.00")).toBeInTheDocument();
   });
 
   it("should renders a text if there are no products in the cart", () => {
-    renderWithClient(<Cart cookie={true} products={[]} totalAmount={0} />);
+    renderWithClient(<Cart products={[]} totalAmount={0} />);
 
     expect(screen.getByText("Your cart is empty :(")).toBeInTheDocument();
-    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("should delete the product if we click on Delete from cart", async () => {
-    renderWithClient(
-      <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
-    );
+    renderWithClient(<Cart products={burgers} totalAmount={75.28} />);
 
     expect(screen.getAllByRole("img")).toHaveLength(3);
 
@@ -81,7 +69,7 @@ describe("Cart Component", () => {
 
     renderWithClient(
       <RouterContext.Provider value={router}>
-        <Cart cookie={true} products={mockCartProducts} totalAmount={75.28} />
+        <Cart products={burgers} totalAmount={75.28} />
       </RouterContext.Provider>
     );
 
