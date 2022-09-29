@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
   const [userAuth, setUserAuth] = useState(false);
 
   const [cookie, _, removeCookie] = useCookies(["userId"]);
 
+  const router = useRouter();
+
   const handleSignOut = () => {
     removeCookie("userId", { path: "/" });
+    router.push("/");
   };
 
   useEffect(() => {

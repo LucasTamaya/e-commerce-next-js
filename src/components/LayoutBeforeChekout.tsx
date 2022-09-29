@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { SnackBar } from "./Common/SnackBar";
+import SnackBar from "./Common/SnackBar";
 
 interface Props {
   openCheckoutSuccess: boolean;
@@ -14,7 +14,9 @@ const LayoutBeforeChekout: React.FC<Props> = ({
 }) => {
   return (
     <div className="w-full h-[70vh] flex justify-center items-center">
-      <p className="font-bold text-3xl">Redirection to Stripe checkout</p>
+      <p className="font-bold text-3xl text-main-red">
+        Redirection to Stripe checkout
+      </p>
       {openCheckoutSuccess && (
         <SnackBar
           openSnackBar={openSnackBar}

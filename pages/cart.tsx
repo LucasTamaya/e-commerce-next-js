@@ -1,5 +1,4 @@
 import type { NextPage, NextPageContext } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -10,17 +9,16 @@ import Header from "@/components/Common/Header";
 import { getUserCartData } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
-import { SnackBar } from "@/components/Common/SnackBar";
+import SnackBar from "@/components/Common/SnackBar";
 import { useCheckout } from "src/hooks/useCheckout";
 import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
 
 interface Props {
-  cookie?: boolean;
   products: IFood[];
   totalAmount: number;
 }
 
-const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
+const Cart: NextPage<Props> = ({ products, totalAmount }) => {
   const [cartProducts, setCartProducts] = useState(products);
   const [cartTotalAmount, setCartTotalAmount] = useState(totalAmount);
   const [productToDelete, setProductToDelete] = useState<IFood>();
@@ -92,19 +90,6 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     setCartProducts(updatedCartProducts);
   };
 
-  // if the user is not authenticated and try to open the cart page
-  if (cookie === false) {
-    return (
-      <div className="w-full h-[70vh] flex justify-center items-center">
-        <Link href="/sign-in">
-          <button className="bg-black p-4 text-white rounded">
-            Please sign-in first
-          </button>
-        </Link>
-      </div>
-    );
-  }
-
   // layout before the user is redirected to the stripe checkout page
   if (openCheckoutSuccess) {
     return (
@@ -122,7 +107,9 @@ const Cart: NextPage<Props> = ({ cookie, products, totalAmount }) => {
     <>
       <Header />
       <div className="px-20 pb-10 mx-auto">
-        <h2 className="text-center text-3xl font-bold mb-12 mt-10">My Cart</h2>
+        <h2 className="text-center text-3xl text-main-red font-bold mb-12 mt-10">
+          My Cart
+        </h2>
 
         {/* if there are no products in the cart */}
         {cartProducts.length === 0 && (
@@ -192,7 +179,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   // if there is no cookie
   if (!req?.headers.cookie) {
     return {
-      props: { cookie: false },
+      redirect: { destination: "/", permanent: false },
     };
   }
 
@@ -201,8 +188,6 @@ export const getServerSideProps = async (context: NextPageContext) => {
 
   try {
     const products: IFood[] = await getUserCartData(userId);
-
-    console.log(products);
 
     if (products?.length === 0) {
       return {
