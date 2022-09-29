@@ -118,14 +118,14 @@ const Cart: NextPage<Props> = ({ products, totalAmount }) => {
 
         {/* if there are some products saved in the cart */}
         {cartProducts.length > 0 && (
-          <div className="max-w-[1300px] px-20 mx-auto">
+          <div className="max-w-[1300px] px-5 mx-auto">
             <p className="font-bold text-xl mb-5">
               Total amount:{" "}
               <span className="text-main-red">
                 ${cartTotalAmount.toFixed(2)}
               </span>
             </p>
-            <ul className="grid grid-cols-3 gap-7 mx-auto mb-5">
+            <ul className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-7 mx-auto mb-5">
               {cartProducts.map(({ id, name, img, price, category }) => (
                 <li key={id}>
                   <ProductCard

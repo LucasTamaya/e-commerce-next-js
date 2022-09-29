@@ -1,3 +1,5 @@
+import PulseLoader from "react-spinners/PulseLoader";
+
 import { useFoods } from "src/hooks/useFoods";
 import Header from "../Common/Header";
 import ProductCard from "./ProductCard";
@@ -19,7 +21,12 @@ const ProductList: React.FC<Props> = ({ category, title }) => {
       >
         {title}
       </h2>
-      {isLoading && <p>Loading...</p>}
+
+      {isLoading && (
+        <div className="w-full h-20 flex flex-row justify-center items-center">
+          <PulseLoader color="#e63b60" size={20} />
+        </div>
+      )}
 
       {isError && <p>Something went wrong, please try again.</p>}
 

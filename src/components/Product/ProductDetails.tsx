@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import PulseLoader from "react-spinners/PulseLoader";
 
 import { IFood } from "../../interfaces/index";
 import Button from "../Common/Button";
@@ -18,8 +19,6 @@ const ProductDetails: React.FC<Props> = ({ productData }) => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [product, setProduct] = useState(productData);
   const [productQuantity, setProductQuantity] = useState(1);
-
-  console.log(productData);
 
   const router = useRouter();
 
@@ -102,10 +101,18 @@ const ProductDetails: React.FC<Props> = ({ productData }) => {
               onChange={(e) => setProductQuantity(e.target.valueAsNumber)}
             />
             <Button filled={true} onClick={openCheckout}>
-              {!openCheckoutLoading ? <>Order now</> : <>Loading</>}
+              {!openCheckoutLoading ? (
+                <>Order now</>
+              ) : (
+                <PulseLoader color="#e63b60" size={7} />
+              )}
             </Button>
             <Button filled={false} onClick={mutate}>
-              {!isLoading ? <>Add to cart</> : <>Loading...</>}
+              {!isLoading ? (
+                <>Add to cart</>
+              ) : (
+                <PulseLoader color="#e63b60" size={7} />
+              )}
             </Button>
           </div>
         </div>
