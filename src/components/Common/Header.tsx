@@ -41,12 +41,18 @@ export default function Header(props: Props) {
     router.push("/");
   };
 
-  const notAuthNavItems = [{ title: "Sign-in", href: "/sign-in" }];
-  const authNavItems = [
+  const BASIC_NAV_ITEMS = [
     { title: "Best Foods", href: "/" },
     { title: "Burgers", href: "/burgers" },
     { title: "Pizzas", href: "/pizzas" },
     { title: "Desserts", href: "/desserts" },
+  ];
+  const notAuthNavItems = [
+    ...BASIC_NAV_ITEMS,
+    { title: "Sign-in", href: "/sign-in" },
+  ];
+  const authNavItems = [
+    ...BASIC_NAV_ITEMS,
     { title: "Cart", href: "/cart" },
     { title: "Sign-out", onClick: handleSignOut },
   ];

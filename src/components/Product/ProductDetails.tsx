@@ -83,10 +83,10 @@ const ProductDetails: React.FC<Props> = ({ productData }) => {
   return (
     <>
       <Header />
-      <div className="relative w-full h-[80vh] flex flex-row justify-center items-center">
-        <div className="max-w-[1000px] flex items-center gap-x-10 mx-auto">
-          <Image src={img} alt="product image" width={350} height={300} />
-          <div className="flex-auto flex flex-col max-w-[700px] gap-y-3">
+      <div className="relative w-full h-screen sm:h-[80vh] flex flex-row justify-center items-center">
+        <div className="max-w-[1000px] flex flex-col sm:flex-row items-center gap-y-5 gap-x-10 mx-auto px-5">
+          <Image src={img} alt="product image" width={450} height={400} />
+          <div className="flex-auto flex flex-col w-full sm:max-w-[700px] gap-y-3">
             <h3 className="font-bold text-xl">{name}</h3>
             <p className="font-bold text-main-red">${price}</p>
             <p>{dsc}</p>
