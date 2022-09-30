@@ -47,6 +47,7 @@ export default function Header(props: Props) {
     { title: "Burgers", href: "/burgers" },
     { title: "Pizzas", href: "/pizzas" },
     { title: "Desserts", href: "/desserts" },
+    { title: "Cart", href: "/cart" },
     { title: "Sign-out", onClick: handleSignOut },
   ];
 
@@ -113,21 +114,23 @@ export default function Header(props: Props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h1"
+            variant="h3"
             component="div"
             sx={{
               flexGrow: 1,
-              display: { xs: "none", sm: "block", fontSize: 45 },
+              display: { md: "block" },
+              fontSize: 35,
+              textAlign: { xs: "center", md: "initial" },
             }}
           >
             NextFoodApp
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: "none", sm: "none", md: "block" } }}>
             {navItems.map((item) => (
               <Button key={item.title} sx={{ color: "#fff" }}>
                 {item.href ? (
@@ -150,7 +153,7 @@ export default function Header(props: Props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { sm: "block", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
