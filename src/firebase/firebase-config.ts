@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
-  FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -26,11 +25,8 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 export const googleProvider = new GoogleAuthProvider();
-export const facebookProvider = new FacebookAuthProvider();
 
-export const signInWithProvider = async (
-  provider: GoogleAuthProvider | FacebookAuthProvider
-) => {
+export const signInWithProvider = async (provider: GoogleAuthProvider) => {
   try {
     const credentials = await signInWithPopup(auth, provider);
 

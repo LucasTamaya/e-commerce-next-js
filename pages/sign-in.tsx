@@ -16,6 +16,7 @@ import {
 import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
 import SnackBar from "@/components/Common/SnackBar";
+import { setCookieOnAuth } from "src/utils/setCookie";
 
 const SignIn: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,15 +40,9 @@ const SignIn: NextPage = () => {
     setError("");
     try {
       const { email, password } = input;
-
       const userId = await signInWithEmailAndPasswordForm(email, password);
-
-      setCookie("userId", userId, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        sameSite: true, // change to false if bug on production
-      });
-
+      // create a cookie
+      setCookieOnAuth(userId, setCookie);
       setLoading(false);
       router.push("/");
     } catch (err: any) {
@@ -61,19 +56,15 @@ const SignIn: NextPage = () => {
   };
 
   const handleSignInWithProvider = async (e: MouseEvent) => {
+    setLoading(true);
+    setError("");
     e.preventDefault();
     try {
       const userId = await signInWithProvider(googleProvider);
-
-      setCookie("userId", userId, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        sameSite: true, // change to false if bug on production
-      });
-
+      setCookieOnAuth(userId, setCookie);
       router.push("/");
     } catch (err: any) {
-      console.log(err.message);
+      setError(err.message);
     }
   };
 
