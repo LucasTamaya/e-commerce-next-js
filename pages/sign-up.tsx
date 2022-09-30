@@ -16,6 +16,7 @@ import {
 } from "src/firebase/firebase-config";
 import { ILoginFormValues } from "src/interfaces";
 import { loginValidationSchema } from "src/yupSchema";
+import { setCookieOnAuth } from "src/utils/setCookie";
 
 const SignUp: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,15 +42,7 @@ const SignUp: NextPage = () => {
       const { email, password } = input;
 
       const userId = await createUserWithEmailAndPasswordForm(email, password);
-
-      localStorage.setItem("userId", userId);
-
-      setCookie("userId", userId, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        sameSite: true, // change to false if bug on production
-      });
-
+      setCookieOnAuth(userId, setCookie);
       setLoading(false);
       router.push("/");
     } catch (err: any) {
@@ -65,13 +58,7 @@ const SignUp: NextPage = () => {
     e.preventDefault();
     try {
       const userId = await signInWithProvider(googleProvider);
-
-      setCookie("userId", userId, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        sameSite: true, // change to false if bug on production
-      });
-
+      setCookieOnAuth(userId, setCookie);
       router.push("/");
     } catch (err: any) {
       console.log(err.message);
