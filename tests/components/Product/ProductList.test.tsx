@@ -6,11 +6,11 @@ import { renderWithClient } from "@/config/utils";
 
 describe("ProductList Component", () => {
   it("should renders the component", () => {
-    const { getByText } = renderWithClient(
+    const { getByRole } = renderWithClient(
       <ProductList category="burgers" title="Burgers" />
     );
 
-    expect(getByText(/Burgers/i)).toBeInTheDocument();
+    expect(getByRole("heading", { name: "Burgers" })).toBeInTheDocument();
   });
 
   it("should renders some ProductCards when the fetch request is done", async () => {

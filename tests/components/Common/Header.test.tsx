@@ -4,13 +4,14 @@ import "@testing-library/jest-dom";
 import Header from "@/components/Common/Header";
 
 describe("Header Component", () => {
-  it("should renders a single navigation link if the user is not sign-in", () => {
+  it("should renders basic navigation links + sign-in link if the user is not sign-in", () => {
     render(<Header />);
 
+    expect(screen.getAllByRole("link")).toHaveLength(5);
     expect(screen.getByRole("link", { name: "Sign-in" })).toBeInTheDocument();
   });
 
-  it("should renders 4 navigation links if the user is sign-in", () => {
+  it("should renders basic navigation links + sign-out button if the user is sign-in", () => {
     // mock a random cookie
     Object.defineProperty(window.document, "cookie", {
       writable: true,
@@ -19,7 +20,10 @@ describe("Header Component", () => {
 
     render(<Header />);
 
-    expect(screen.getAllByRole("link")).toHaveLength(4);
+    expect(screen.getAllByRole("link")).toHaveLength(5);
+    expect(
+      screen.getByRole("button", { name: "Sign-out" })
+    ).toBeInTheDocument();
   });
 
   // it("should deletes the cookie if we click on Sign-out", async () => {
