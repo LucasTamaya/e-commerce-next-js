@@ -102,7 +102,11 @@ export default function Header(props: Props) {
   // layout on large screen
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component="nav" className="bg-main-red px-10 py-3">
+      <AppBar
+        component="nav"
+        sx={{ backgroundColor: "#e63b60" }}
+        className="px-10 py-3"
+      >
         <Toolbar>
           <IconButton
             color="inherit"
