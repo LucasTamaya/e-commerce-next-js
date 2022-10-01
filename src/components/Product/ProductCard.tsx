@@ -24,7 +24,7 @@ const ProductCard: React.FC<IProductCard> = ({
 
       <Link href={`/${category}/${id}`} role={"link"}>
         <a className="w-full block text-center text-main-red border-2 border-main-red rounded uppercase font-bold py-2 transition duration-200 mb-3 hover:text-white hover:bg-main-red ">
-          See more
+          Meal Details
         </a>
       </Link>
     </>

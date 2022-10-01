@@ -70,81 +70,76 @@ const ProductDetails: React.FC<Props> = ({ productData }) => {
   // layout before the user is redirected to the stripe checkout page
   if (openCheckoutSuccess) {
     return (
-      <>
-        <LayoutBeforeChekout
-          openCheckoutSuccess={openCheckoutSuccess}
-          openSnackBar={openSnackBar}
-          setOpenSnackBar={setOpenSnackBar}
-        />
-      </>
+      <LayoutBeforeChekout
+        openCheckoutSuccess={openCheckoutSuccess}
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+      />
     );
   }
 
   return (
-    <>
-      <Header />
-      <div className="relative w-full h-screen sm:h-[80vh] flex flex-row justify-center items-center">
-        <div className="max-w-[1000px] flex flex-col sm:flex-row items-center gap-y-5 gap-x-10 mx-auto px-5">
-          <Image src={img} alt="product image" width={450} height={400} />
-          <div className="flex-auto flex flex-col w-full sm:max-w-[700px] gap-y-3">
-            <h3 className="font-bold text-xl">{name}</h3>
-            <p className="font-bold text-main-red">${price}</p>
-            <p>{dsc}</p>
-            <label htmlFor="quantity" className="font-bold">
-              Select a quantity:
-            </label>
-            <input
-              type="number"
-              id="quantity"
-              defaultValue={1}
-              className="border border-black w-12 pl-4 py-1"
-              onChange={(e) => setProductQuantity(e.target.valueAsNumber)}
-            />
-            <Button filled={true} onClick={openCheckout}>
-              {!openCheckoutLoading ? (
-                <>Order now</>
-              ) : (
-                <PulseLoader color="#e63b60" size={7} />
-              )}
-            </Button>
-            <Button filled={false} onClick={mutate}>
-              {!isLoading ? (
-                <>Add to cart</>
-              ) : (
-                <PulseLoader color="#e63b60" size={7} />
-              )}
-            </Button>
-          </div>
+    <main className="relative w-full h-screen sm:h-[80vh] flex flex-row justify-center items-center">
+      <div className="max-w-[1000px] flex flex-col sm:flex-row items-center gap-y-5 gap-x-10 mx-auto px-5">
+        <Image src={img} alt="product image" width={450} height={400} />
+        <div className="flex-auto flex flex-col w-full sm:max-w-[700px] gap-y-3">
+          <h1 className="font-bold text-xl">{name}</h1>
+          <p className="font-bold text-main-red">${price}</p>
+          <p>{dsc}</p>
+          <label htmlFor="quantity" className="font-bold">
+            Select a quantity:
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            defaultValue={1}
+            className="border border-black w-12 pl-4 py-1"
+            onChange={(e) => setProductQuantity(e.target.valueAsNumber)}
+          />
+          <Button filled={true} onClick={openCheckout}>
+            {!openCheckoutLoading ? (
+              <>Order now</>
+            ) : (
+              <PulseLoader color="#e63b60" size={7} />
+            )}
+          </Button>
+          <Button filled={false} onClick={mutate}>
+            {!isLoading ? (
+              <>Add to cart</>
+            ) : (
+              <PulseLoader color="#e63b60" size={7} />
+            )}
+          </Button>
         </div>
-
-        {isError && (
-          <SnackBar
-            openSnackBar={openSnackBar}
-            setOpenSnackBar={setOpenSnackBar}
-            severity="error"
-            message="Something went wrong"
-          />
-        )}
-
-        {addToCartSuccess && (
-          <SnackBar
-            openSnackBar={openSnackBar}
-            setOpenSnackBar={setOpenSnackBar}
-            severity={data.error ? "warning" : "success"}
-            message={data.message}
-          />
-        )}
-
-        {openCheckoutError && (
-          <SnackBar
-            openSnackBar={openSnackBar}
-            setOpenSnackBar={setOpenSnackBar}
-            severity="error"
-            message="Something went wrong"
-          />
-        )}
       </div>
-    </>
+
+      {isError && (
+        <SnackBar
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+          severity="error"
+          message="Something went wrong"
+        />
+      )}
+
+      {addToCartSuccess && (
+        <SnackBar
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+          severity={data.error ? "warning" : "success"}
+          message={data.message}
+        />
+      )}
+
+      {openCheckoutError && (
+        <SnackBar
+          openSnackBar={openSnackBar}
+          setOpenSnackBar={setOpenSnackBar}
+          severity="error"
+          message="Something went wrong"
+        />
+      )}
+    </main>
   );
 };
 

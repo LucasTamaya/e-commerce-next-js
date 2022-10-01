@@ -13,8 +13,8 @@ const LayoutBeforeChekout: React.FC<Props> = ({
   setOpenSnackBar,
 }) => {
   return (
-    <div className="w-full h-[70vh] flex justify-center items-center">
-      <p className="font-bold text-3xl text-main-red">
+    <main className="w-full h-[70vh] flex justify-center items-center">
+      <p className="font-bold text-3xl text-main-red text-center">
         Redirection to Stripe checkout
       </p>
       {openCheckoutSuccess && (
@@ -25,7 +25,7 @@ const LayoutBeforeChekout: React.FC<Props> = ({
           message="Redirection to Stripe checkout"
         />
       )}
-    </div>
+    </main>
   );
 };
 

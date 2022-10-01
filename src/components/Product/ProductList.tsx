@@ -1,7 +1,6 @@
 import PulseLoader from "react-spinners/PulseLoader";
 
 import { useFoods } from "src/hooks/useFoods";
-import Header from "../Common/Header";
 import ProductCard from "./ProductCard";
 
 interface Props {
@@ -13,14 +12,13 @@ const ProductList: React.FC<Props> = ({ category, title }) => {
   const { isLoading, isError, isSuccess, data } = useFoods(category);
 
   return (
-    <section>
-      <Header />
-      <h2
+    <main>
+      <h1
         role={"heading"}
         className="text-center text-3xl text-main-red font-bold mb-12 mt-10"
       >
         {title}
-      </h2>
+      </h1>
 
       {isLoading && (
         <div className="w-full h-20 flex flex-row justify-center items-center">
@@ -45,7 +43,7 @@ const ProductList: React.FC<Props> = ({ category, title }) => {
           ))}
         </ul>
       )}
-    </section>
+    </main>
   );
 };
 

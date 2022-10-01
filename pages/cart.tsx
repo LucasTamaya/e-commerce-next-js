@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import ProductCard from "@/components/Product/ProductCard";
 import { IFood } from "@/interfaces/*";
 import Button from "@/components/Common/Button";
-import Header from "@/components/Common/Header";
 import { getUserCartData } from "src/firebase/utils";
 import { getCartTotalAmount } from "src/utils/getCartTotalAmount";
 import { useDeleteProductFromCart } from "../src/hooks/useDeleteProductFromCart";
 import SnackBar from "@/components/Common/SnackBar";
 import { useCheckout } from "src/hooks/useCheckout";
 import LayoutBeforeChekout from "@/components/LayoutBeforeChekout";
+import HeadStructure from "@/components/Common/HeadStructure";
 
 interface Props {
   products: IFood[];
@@ -94,6 +94,10 @@ const Cart: NextPage<Props> = ({ products, totalAmount }) => {
   if (openCheckoutSuccess) {
     return (
       <>
+        <HeadStructure
+          title="NextFoodApp - Cart"
+          content="Check out the most delicious dishes from NextFoodApp and enjoy free delivery!"
+        />
         <LayoutBeforeChekout
           openCheckoutSuccess={openCheckoutSuccess}
           openSnackBar={openSnackBar}
@@ -105,11 +109,14 @@ const Cart: NextPage<Props> = ({ products, totalAmount }) => {
 
   return (
     <>
-      <Header />
-      <div className="px-20 pb-10 mx-auto">
-        <h2 className="text-center text-3xl text-main-red font-bold mb-12 mt-10">
+      <HeadStructure
+        title="NextFoodApp - Cart"
+        content="Check out the most delicious dishes from NextFoodApp and enjoy free delivery!"
+      />
+      <main className="px-20 pb-10 mx-auto">
+        <h1 className="text-center text-3xl text-main-red font-bold mb-12 mt-10">
           My Cart
-        </h2>
+        </h1>
 
         {/* if there are no products in the cart */}
         {cartProducts.length === 0 && (
@@ -166,7 +173,7 @@ const Cart: NextPage<Props> = ({ products, totalAmount }) => {
             message="Product deleted from cart"
           />
         )}
-      </div>
+      </main>
     </>
   );
 };

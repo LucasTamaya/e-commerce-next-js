@@ -4,13 +4,22 @@ import type { NextPage, NextPageContext } from "next";
 import { FOOD_API_BASE_URL } from "src/utils/urls";
 import ProductDetails from "src/components/Product/ProductDetails";
 import { IFood } from "src/interfaces/index";
+import HeadStructure from "@/components/Common/HeadStructure";
 
 interface Props {
   productData: IFood;
 }
 
 const BestFoodsProduct: NextPage<Props> = ({ productData }) => {
-  return <ProductDetails productData={productData} />;
+  return (
+    <>
+      <HeadStructure
+        title="NextFoodApp - Best Foods"
+        content="Check out the most delicious dishes from NextFoodApp and enjoy free delivery!"
+      />
+      <ProductDetails productData={productData} />;
+    </>
+  );
 };
 
 export default BestFoodsProduct;
